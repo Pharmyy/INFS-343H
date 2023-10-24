@@ -1,0 +1,252 @@
+---
+title: "Business Analytics Homework3"
+author: "Ryan Hensley"
+output:
+  html_document: 
+    code_download: TRUE
+    toc: TRUE
+---
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+## R Markdown
+
+### Formatting in R Markdowns
+
+### Creates a header (need the space between the # and first character/text)
+-   creates a bullet point (dash followed by a tab)
+
+**bolds the text**
+
+
+# Start Below
+
+## Question 1: Load/Create a data frame for the data file called jobdesc.csv; call the object jobs
+-   taken as a sample/subset from https://www.kaggle.com/datasets/ravindrasinghrana/job-description-dataset
+
+```{r}
+jobs = read.csv("jobdesc.csv")
+
+```
+
+## Question 2: Display the structure for the data frame jobs
+```{r}
+str(jobs)
+```
+
+## Question 3: Display the first 10 rows for jobs using head(); note: default is 6
+```{r}
+head(jobs,10)
+```
+
+## Question 4: Display the last 10 rows for jobs using tail(); note: default is 6
+```{r}
+tail(jobs,10)
+```
+
+## Question 5: Display the unique values for the following columns from the data frame jobs:
+
+-   location
+-   Work.Type
+-   Preference
+```{r}
+unique(jobs$location)
+unique(jobs$Work.Type)
+unique(jobs$Preference)
+
+```
+
+## Question 6: Display the column names for the data frame object called jobs 
+```{r}
+
+colnames(jobs)
+
+```
+
+## Question 7: Match the following column names and display the names after changing to confirm
+
+-   Job_ID 
+-   Experience
+-   Qualifications
+-   Salary_Range 
+-   Location
+-   Country
+-   latitude
+-   longitude
+-   Work_Type
+-   Company_Size
+-   Job_Post_Date
+-   Preference
+-   Contact_Person
+-   Contact
+-   Job_Title
+-   Role 
+-   Job_Portal
+-   Company
+
+```{r}
+#Change the column names
+colnames(jobs)[1] = "Job_ID" 
+colnames(jobs)[4] = "Salary.Range" 
+colnames(jobs)[5] = "Location"
+colnames(jobs)[9] = "Work_Type" 
+colnames(jobs)[10] = "Company_Size" 
+colnames(jobs)[11] = "Job_Post_Date"
+colnames(jobs)[13] = "Contact_Person" 
+colnames(jobs)[15] = "Job_Title"
+colnames(jobs)[17] = "Job_Portal" 
+
+
+
+#Display column names
+colnames(jobs)
+
+
+```
+
+## Question 8: Match the following data types and after run str() to check the changes: 
+
+
+-   Job_ID as a character
+-   Experience as a character
+-   Qualifications as a factor
+-   Salary_Range as a character
+-   Location as a factor
+-   Country as a factor
+-   latitude as numeric
+-   longitude as numeric
+-   Work_Type as a factor
+-   Company_Size as an integer
+-   Job_Post_Date as a character
+-   Preference as a factor
+-   Contact_Person as a character
+-   Contact as a character
+-   Job_Title as a character
+-   Role as a character
+-   Job_Portal as a character
+-   Company as a character
+
+```{r}
+#Change the data types for data frame variables (columns)
+jobs$Job_ID = as.character(jobs$Job_ID)
+jobs$Experience = as.character(jobs$Experience)
+jobs$Qualifications = as.factor(jobs$Qualifications)
+jobs$Salary.Range = as.character(jobs$Salary.Range)
+jobs$Location = as.factor(jobs$Location)
+jobs$Country = as.factor(jobs$Country)
+jobs$latitude = as.numeric(jobs$latitude)
+jobs$longitude = as.numeric(jobs$longitude)
+jobs$Work_Type = as.factor(jobs$Work_Type)
+jobs$Company_Size = as.integer(jobs$Company_Size)
+jobs$Job_Post_Date = as.character(jobs$Job_Post_Date)
+jobs$Preference = as.factor(jobs$Preference)
+jobs$Contact_Person = as.character(jobs$Contact_Person)
+jobs$Contact = as.character(jobs$Contact)
+jobs$Job_Title = as.character(jobs$Job_Title)
+jobs$Role = as.character(jobs$Role)
+jobs$Job_Portal = as.character(jobs$Job_Portal)
+jobs$Company = as.character(jobs$Company)
+
+
+#Display data frame structure (str)
+
+str(jobs)
+
+```
+
+
+
+**ADD THE QUESTIONS BELOW AND A CHUNK FOLLOWING EACH TO THE HW3.RMD**
+
+## Question 10: Diplay the total number of NA values from the data frame jobs using the following:
+- is.na()
+- sum(is.na())
+- which(is.na())
+```{r}
+is.na(jobs)
+sum(is.na(jobs))
+which(is.na(jobs))
+```
+
+## Question 11: Display the following rows: dataframe[rows, columns] for all columns
+- 5
+- 6
+- 9
+```{r}
+jobs[c(5,6,9),] 
+```
+
+## Question 12: Display the following rows for columns 3 and 10 (not 3 to 10):
+- 3
+- 10
+```{r}
+jobs[c(3,10),]
+```
+
+## Question 13: Change a single value within jobs for the following rows and columns:
+- Change the Qualifications for Row 5 to MCA
+- Change the Qualifications for Row 6 to MCA
+- Change the Company Size for Row 9 to 68152
+- Change the Preference for Row 1 to Both
+```{r}
+jobs[5,3] = "MCA"
+jobs[6,3] = "MCA"
+jobs[9,10] = 68152
+jobs[1,12] = "Both"
+```
+
+
+## Question 14: Change multiple values within jobs for Work_Type:
+- use gsub to change all values set to "Temporary" to "Temp" for the column Work_Type
+```{r}
+ jobs$Work_Type = gsub("Temporary", "Temp", jobs$Work_Type)
+```
+
+## Question 15: Remove the columns latitude, longitude, and Contact from the data frame jobs
+```{r}
+jobs$latitude = NULL
+jobs$longitude = NULL
+jobs$contact = NULL
+
+```
+
+## Question 16: Use na.omit to remove any rows with NA from jobs creating a new data frame object called jobs2
+```{r}
+jobs2  = na.omit(jobs)
+```
+
+------------------------- NOW USING JOBS 2 ---------------------------------------
+## Question 17: Create a new column to jobs2 called NoPref based on whether the column Preference is equal to Both
+(meaning, if the value is Both then True so no preference)
+```{r}
+jobs2$NoPref = jobs2$Preference == "Both"
+```
+
+## Question 18: Create a subset from jobs2 based on whether the NoPref column is not equal to True and call it FlaggedJobs
+```{r}
+# Create the subset
+FlaggedJobs =  subset(jobs2,jobs2$NoPref == FALSE)
+
+```
+
+## Question 19: Display an aggregate for jobs2 based on the Role and average Company_Size
+```{r}
+aggregate(Company_Size~Role, data = jobs2, mean)
+```
+
+## Question 20: Save the order/sort for the data in jobs2 ordered by the Company column
+```{r}
+jobs2 = jobs2[order(jobs2$Company, decreasing = FALSE), ]
+```
+
+
+
+
+
+
+### Knit to HTML
+
+
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**

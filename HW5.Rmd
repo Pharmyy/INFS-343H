@@ -1,0 +1,365 @@
+---
+title: "Homework 5"
+author: "Ryan Hensley"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    code_download: yes
+    toc: yes
+---
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+# Data, Plots, Correlation Coefficient
+Data taken from: https://www.kaggle.com/datasets/kumarajarshi/life-expectancy-who/data
+
+
+## Read the data from LifeExpectancyData.csv creating a new data frame called life 
+```{r}
+life = read.csv("LifeExpectancyData.csv")
+```
+
+## Display the top 10 rows of the data in life data frame
+```{r}
+head(life,10)
+```
+
+## Display the column names in life data frame
+```{r}
+colnames(life)
+```
+
+
+## Plot the following: par(mfrow=c(1,2))
+-   a.	Plot of LifeExpectancy vs AdultMortality	(LifeExpectancy should be on Y axis) (x,y) | col = "grey" | main="Life Expectancy and Adult Mortality"
+-   abline(lm(LifeExpectancy~AdultMortality, data=life),lwd = 2, col="red")
+-   b.	Plot of LifeExpectancy vs BMI	(LifeExpectancy should be on Y axis) (x,y) | col = "grey" | main="Life Expectancy and BMI"
+-   abline(lm(LifeExpectancy~BMI, data=life),lwd = 2, col="darkgreen")
+```{r}
+par(mfrow=c(1,2))
+plot(life$AdultMortality,life$LifeExpectancy,main="Life Expectancy and Adult Mortality",col="grey")
+abline(lm(LifeExpectancy~AdultMortality, data=life),lwd = 2, col="red")
+plot(life$BMI,life$LifeExpectancy,main="Life Expectancy and BMI",col="grey")
+abline(lm(LifeExpectancy~BMI, data=life),lwd = 2, col="darkgreen")
+
+```
+
+## Display the following 9 plots in 3 rows and 3 columns (the code all must go in the same chunk—each on a new line): par (mfrow=c(3,3))
+ 
+-    a.	LifeExpectancy vs AdultMortality  main="Life Expectancy and Adult Mortality"
+-    b.	LifeExpectancy vs InfantDeaths    main="Life Expectancy and InfantDeaths"
+-    c.	LifeExpectancy vs Alcohol        main="Life Expectancy and Alcohol"
+-    d.	LifeExpectancy vs Perct_Expenditure  main="Life Expectancy and Perct_Expenditure"
+-    e.	LifeExpectancy vs HepatitisB main="Life Expectancy and HepatitisB"
+-    f.	LifeExpectancy vs Measles  main="Life Expectancy and Measles"
+-    g. LifeExpectancy vs BMI main="Life Expectancy and BMI"
+-    h. LifeExpectancy vs Polio  main="Life Expectancy and Polio"
+-    i. LifeExpectancy vs TotalExpenditure  main="Life Expectancy and TotalExpenditure"
+
+-   Add a linear regression line to each plot for bullet points a through i above. abline(lm(dependent~independent, data=life), lwd=2, col="red")
+
+-   Determine whether each independent variable has a positive or negative relationship with LifeExpectancy. Answer Negative and Positive within the chunk (comment)
+```{r}
+par (mfrow=c(3,3))
+  plot(life$AdultMortality,life$LifeExpectancy,main="Life Expectancy and Adult Mortality")
+  abline(lm(LifeExpectancy~AdultMortality, data=life), lwd=2, col="red")
+
+  plot(life$InfantDeaths,life$LifeExpectancy,main="Life Expectancy and InfantDeaths")
+  abline(lm(LifeExpectancy~InfantDeaths, data=life), lwd=2, col="red")
+
+  plot(life$Alcohol,life$LifeExpectancy,main="Life Expectancy and Alcohol")
+  abline(lm(LifeExpectancy~Alcohol, data=life), lwd=2, col="red")
+
+  plot(life$Perct_Expenditure,life$LifeExpectancy,main="Life Expectancy and Perct_Expenditure")
+  abline(lm(LifeExpectancy~Perct_Expenditure, data=life), lwd=2, col="red")
+
+  plot(life$HepatitisB,life$LifeExpectancy,main="Life Expectancy and HepatitisB")
+  abline(lm(LifeExpectancy~HepatitisB, data=life), lwd=2, col="red")
+
+  plot(life$Measles,life$LifeExpectancy,main="Life Expectancy and Measles")
+  abline(lm(LifeExpectancy~Measles, data=life), lwd=2, col="red")
+
+  plot(life$BMI,life$LifeExpectancy,main="Life Expectancy and BMI")
+  abline(lm(LifeExpectancy~BMI, data=life), lwd=2, col="red")
+
+  plot(life$Polio,life$LifeExpectancy,main="Life Expectancy and Polio")
+  abline(lm(LifeExpectancy~Polio, data=life), lwd=2, col="red")
+
+  plot(life$TotalExpenditure,life$LifeExpectancy,main="Life Expectancy and TotalExpenditure")
+  abline(lm(LifeExpectancy~TotalExpenditure, data=life), lwd=2, col="red")
+
+#Positive Relationship: Alcohol, Perct_Expenditure,HepetitisB,BMI,Polio,TotalExpenditure
+#Negative Relationship:AdultMortality,InfantDeaths,Measles 
+```
+
+
+## Calculate the following correlation coefficients: **columns 4 through 19**
+
+-    a.	LifeExpectancy and AdultMortality 
+-    b.	LifeExpectancy and InfantDeaths 
+-    c.	LifeExpectancy and Alcohol
+-    d.	LifeExpectancy and Perct_Expenditure 
+-    e.	LifeExpectancy and HepatitisB 
+-    f.	LifeExpectancy and Measles
+-    g.	LifeExpectancy and BMI
+-    h.	LifeExpectancy and Polio
+-    i.	LifeExpectancy and TotalExpenditure
+-    j.	LifeExpectancy and Diphtheria
+-    k.	LifeExpectancy and HIV_AIDS
+-    l.	LifeExpectancy and GDP
+-    m.	LifeExpectancy and Population
+-    n.	LifeExpectancy and IncomeComp
+-    o.	LifeExpectancy and Schooling
+
+### Which variable has the highest correlation with LifeExpectancy? Which variable has the second highest correlation with LifeExpectancy?
+```{r}
+cor(life$LifeExpectancy,life[,4:19])
+
+
+#Highest Correlation Coefficient: IncomeComp
+#Second: Schooling
+```
+
+# Regression: Simple Linear Regression Problem 1 
+
+## Complete the following: Regression Model and Summary
+
+-   Use a simple regression model to predict the LifeExpectancy by using AdultMortality. Call this model as LR1
+**"Adult Mortality Rates of both sexes (probability of dying between 15 and 60 years per 1000 population)"**
+-   Display the summary calculations for LR1
+```{r}
+options(scipen=999)
+#------------------------------------------
+#Regression Model:
+LR1 = lm(LifeExpectancy~AdultMortality,data=life)
+
+
+#------------------------------------------
+#Summary of Model:
+
+summary(LR1)
+
+#------------------------------------------
+```
+
+
+## Complete the following:  **Answer in chunk as a comment**: 
+
+-   What is the estimated regression equation?
+-   What percentage of the total variation in LifeExpectancy is explained by the regression (R2)?
+-   Is AdultMortality significant in predicting the LifeExpectancy at significance level of 0.05? To answer this question, we need to test Ho that H1= 0 against the two-sided alternative. Should the null hypothesis be accepted or rejected at a 0.05 significance level?
+
+```{r}
+#------------------------------------------
+#Regression Equation:  
+#Answer:  y = 78.018216-0.053358x 
+
+
+#------------------------------------------
+#R2:
+##Answer: 48.49% of the variation is is explained by the independent variable in the model
+
+
+
+#------------------------------------------
+#Hypothesis Testing:AdultMortality
+
+#Answer p-value: <0.0000000000000002 pvalue < 0.05
+#Decision/Response: Reject the null hypothesis [that AdultMortality is not significant]; AdultMortality is significant in predicting LifeExpectancy
+
+
+#------------------------------------------
+```
+
+
+## Complete the following: Prediction and Confidence Interval
+
+-   Calculate the predicted average LifeExpectancy for a country with an AdultMortality rate of 280.
+-   Construct a 95 percent confidence interval estimate for the mean LifeExpectancy of the country with an AdultMortality rate of 280. (include correct interpretation)
+```{r}
+#------------------------------------------
+#Predict Code
+78.018216-(0.053358*280)
+
+#Answer/Statement: the predicted average LifeExpectancy for a country with an AdultMortality rate of 280 Is 63.07798 years
+#------------------------------------------
+#Confidence Interval Code
+predict(LR1, data.frame(AdultMortality=280), interval="confidence")
+
+
+#------------------------------------------
+#Confidence Interval Interpretation Response/Statement: With 95% confidence, we can say the life expectancy with an adult mortality rate of 280 would have a life expectancy between 62.74005 and 63.41564
+#------------------------------------------
+```
+
+
+# Regression: Multiple Regression Problem 1
+
+
+## Complete the following: Regression Model and Summary
+
+-   Use a multiple regression model to predict the LifeExpectancy (Y) by using AdultMortality (X1), Schooling (X2), and IncomeComp (X3). Call this model as LR3. 
+**LifeExpectancy: Life Expectancy in age** | 
+**AdultMortality: Adult Mortality Rates of both sexes (probability of dying between 15 and 60 years per 1000 population)** | 
+**Schooling: Number of years of Schooling(years)** | 
+**IncomeComp: Human Development Index in terms of income composition of resources (index ranging from 0 to 1)**
+
+-   Display the summary calculations for LR3.
+
+```{r}
+options(scipen=999)
+#------------------------------------------
+#Regression Model:
+LR3= lm(LifeExpectancy~AdultMortality+Schooling+IncomeComp, data=life)
+
+
+#------------------------------------------
+#Summary of Model:
+summary(LR3)
+
+
+
+#------------------------------------------
+```
+
+## Complete the following:  **Answer in chunk as a comment**: 
+
+-   What is the estimated regression equation?
+-   What percentage of the total variation in LifeExpectancy is explained by the regression (R2)?
+-   Is Schooling significant in predicting the LifeExpectancy at significance level of 0.05? To answer this question, we need to test Ho that H1= 0 against the two-sided alternative. Should the null hypothesis be accepted or rejected at a 0.05 significance level?
+-   Is IncomeComp significant in predicting the LifeExpectancy as at significance level of 0.05? To answer this question, we need to test Ho that H1= 0 against the two-sided alternative. Should the null hypothesis be accepted or rejected at a 0.05 significance level?
+```{r}
+#------------------------------------------
+#Regression Equation:
+#Answer: y= 66.1092771 - 0.0411909adultmortality + 0.4443687schooling + 8.1986416incomeComp
+
+
+#------------------------------------------
+#R2:
+##Answer: 61.94% of the variation is explained by the independent variable in the model
+
+
+
+#------------------------------------------
+#Hypothesis Testing:Schooling
+
+#Answer p-value: 0.0000000000000002 < 0.05
+#Decision/Response: Reject the null hypothesis [that schooling is not significant]; schooling is significant in predicting LifeExpectancy
+
+
+#------------------------------------------
+#------------------------------------------
+#Hypothesis Testing:IncomeComp
+
+#Answer p-value: 0.0000000000000002 < 0.05
+#Decision/Response: Reject the null hypothesis [that schooling is not significant]; IncomeComp is significant in predicting LifeExpectancy
+
+
+#------------------------------------------
+```
+
+## Complete the following: Prediction and Confidence Interval
+
+-   Calculate the predicted LifeExpectancy with an AdultMortality rate of 280, SChooling average of 9, and IncomeComp of 0.50.
+-   Construct a 95 percent confidence interval estimate for the mean LifeExpectancywith an AdultMortality rate of 280, SChooling average of 9, and IncomeComp of 0.50. (include correct interpretation)
+```{r}
+#------------------------------------------
+#Predict Code 
+66.1092771 - (0.0411909*280) + (0.4443687*9)+ (8.1986416*0.50)
+
+#Answer/Statement: The LifeExpectancy with an AdultMortality rate of 280, SChooling average of 9, and IncomeComp of 0.50 = 62.67446 years
+
+#------------------------------------------
+#Confidence Interval Code
+predict(LR3, data.frame(AdultMortality=280, Schooling=9,IncomeComp=0.50), interval="confidence")
+
+#------------------------------------------
+#Confidence Interval Interpretation Response/Statement: With 95% confidence, we can say the LifeExpectancy with 280 AdultMortality, Schooling of 9, and a IncomeComp of 0.50 would have a LifeExpectancy value between 62.37123 and 62.97769
+#------------------------------------------
+```
+
+
+# Regression: Multiple Regression Problem 2
+
+## Complete the following: Regression Model and Summary
+-   Use a multiple regression model to predict the LifeExpectancy (Y) by using AdultMortality (X1), Schooling (X2), IncomeComp (X3) and GDP (X4). Call this model as LR4. 
+**LifeExpectancy: Life Expectancy in age** | 
+**AdultMortality: Adult Mortality Rates of both sexes (probability of dying between 15 and 60 years per 1000 population)** | 
+**Schooling: Number of years of Schooling(years)** | 
+**IncomeComp: Human Development Index in terms of income composition of resources (index ranging from 0 to 1)** |
+**GDP: Gross Domestic Product per capita (in USD)**
+
+-   Display the summary calculations for LR4.
+
+```{r}
+options(scipen=999)
+#------------------------------------------
+#Regression Model:
+LR4 = lm(LifeExpectancy~AdultMortality+Schooling+IncomeComp+GDP, data=life)
+
+
+
+#------------------------------------------
+#Summary of Model:
+summary(LR4)
+
+
+
+#------------------------------------------
+```
+
+## Complete the following:  **Answer in chunk as a comment**: 
+
+-   What is the estimated regression equation?
+-   What percentage of the total variation in LifeExpectancy is explained by the regression (R2)?
+-   Is GDP significant in predicting the LifeExpectancy at significance level of 0.05? To answer this question, we need to test Ho that H1= 0 against the two-sided alternative. Should the null hypothesis be accepted or rejected at a 0.05 significance level?
+```{r}
+#------------------------------------------
+#Regression Equation:
+#Answer: Y = 66.51736920 - 0.03988078AdultMortality + 0.40551758Schooling + 6.88723295Income + 0.00009348GDP
+
+
+#------------------------------------------
+#R2:
+##Answer: 63.32% of the variation is explained by the independent variable in the model
+
+
+
+
+#------------------------------------------
+#Hypothesis Testing:GDP
+
+#Answer p-value: 0.0000000000000002 p-value < 0.05
+#Decision/Response: Reject the null hypothesis [that GDP is not significant]; GDP is significant in predicting house LifeEx[ectancy]
+
+
+#------------------------------------------
+```
+
+## Complete the following: Prediction and Confidence Interval 
+
+-   Calculate the predicted LifeExpectancy with an AdultMortality rate of 280, Schooling average of 9, IncomeComp of 0.50 and GDP of 430.
+-   Construct a 95 percent confidence interval estimate for the mean LifeExpectancywith an AdultMortality rate of 280, SChooling average of 9, IncomeComp of 0.50, and GDP of 430. (include correct interpretation)
+```{r}
+#------------------------------------------
+#Predict Code
+66.51736920 - (0.03988078*280) + (0.40551758*9) + (6.88723295*0.50) + (0.00009348*430)
+
+
+#Answer/Statement: The LifeExpectancy with an AdultMortality rate of 280, Schooling average of 9, IncomeComp of 0.50 and GDP of 430 is 62.48422
+
+#------------------------------------------
+#Confidence Interval Code
+predict(LR4, data.frame(AdultMortality=280, Schooling=9,IncomeComp=0.50,GDP = 62.48422), interval="confidence")
+
+
+#------------------------------------------
+#Confidence Interval Interpretation Response/Statement: With 95% confidence, we can say the LifeExpectancy with 280 AdultMortality, Schooling of 9, a IncomeComp of 0.50, and a GDP of 62.48422 would have a LifeExpectancy value between 62.14923 and 62.7505
+#------------------------------------------
+```
+
+# Knit to HTML
+
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**

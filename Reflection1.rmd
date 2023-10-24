@@ -1,0 +1,104 @@
+---
+title: "Reflection1"
+author: "Ryan Hensley"
+date: "2023-10-18"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+  DirtyCrashes = read.csv("Crashes.csv")
+#Clean by removing unwanted columns 
+  crashes = DirtyCrashes[,c(4:9,14,21,26,37,44:46)]
+```
+```{r}
+  head(crashes)
+#check colnames
+  colnames(crashes)
+#change colnames
+  names(crashes)[1:13] = c("CrashDate","SpeedLimit","TrafficControlDevice","ConditionOfDevice","WeatherConditon","LightConditon","ConditionOfRoadwaySurface","AmountOfDamage","Direction","NumberOfInjuries","HourOfCrash","CrashDay","CrashMonth")
+```
+
+```{r}
+#check and change datatype
+str(crashes)
+crashes$TrafficControlDevice = as.factor(crashes$TrafficControlDevice)
+crashes$ConditionOfDevice = as.factor(crashes$ConditionOfDevice)
+crashes$WeatherConditon = as.factor(crashes$WeatherConditon)
+crashes$LightConditon = as.factor(crashes$LightConditon)
+crashes$ConditionOfRoadwaySurface = as.factor(crashes$ConditionOfRoadwaySurface)
+crashes$AmountOfDamage = as.factor(crashes$AmountOfDamage)
+crashes$Direction = as.factor(crashes$Direction)
+
+#left month,day,hour as int instead of factor so I can run custom mode function and to keep factor values low
+```
+
+```{r}
+#Descriptive
+#basic summary
+summary(crashes)
+```
+
+
+```{r}
+#Create custom mode function 
+ModeCalc = function(x) {
+  u = unique(x)
+  tab = tabulate(match(x, u))
+  u[tab == max(tab)]
+}
+
+```
+
+
+```{r}
+#What speed limit are you most likely to be involved in a crash? 
+ModeCalc(crashes$SpeedLimit)
+hist(crashes$SpeedLimit,main="Crashes at Given Speed Limits",col="lemonchiffon2",xlab="Speed Limit",ylab="Number of Crashes")
+```
+```{r}
+#What month are you most likely to be involved in a crash? 
+ModeCalc(crashes$CrashMonth)
+# Most likely to get in an accident in september 
+```
+```{r}
+#What day are you most likely to be involved in a crash? 
+ModeCalc(crashes$CrashDay)
+# Most likely to get in an accident on saturday 
+```
+
+```{r}
+#Which direction are you most likely to be involved in a crash? 
+ModeCalc(crashes$Direction)
+# Most likely to get in an accident Going West
+
+#Summary by Direction 
+summary(crashes$Direction)
+```
+```{r}
+#What is the average amount of money that a crash costs($500 OR LESS, $501 - $1,500, OVER $1,500)
+ModeCalc(crashes$AmountOfDamage)
+# Crash Most Likely Does over $1500 in damage meaning that there are not many fender beners
+
+#How many under 1500
+table(crashes$AmountOfDamage)
+Under1500  = sum(89115+207638)
+Under1500
+
+```
+```{r}
+#What hour are you most likely to be involved in a crash
+ModeCalc(crashes$HourOfCrash)
+# Crash Most Likely to occur at 3pm
+```
+```{r}
+#How many injuries are likely to occur in a crash
+ModeCalc(crashes$NumberOfInjuries)
+# Zero Injuries are most likely to occur 
+```
+

@@ -1,0 +1,146 @@
+---
+title: "Business Analytics Homework1Part2"
+author: "Ryan Hensley"
+output:
+  html_document: 
+    code_download: TRUE
+    toc: TRUE
+---
+
+**Set the sub folder (where you have saved the files) as the working directory: Click Session --\> Set Working Directory --\> Choose Directory ... and select he sub folder where you saved the downloaded file(s) and click on OK.**
+
+
+
+### Formatting in R Markdowns
+
+### Creates a header (need the space between the # and first character/text)
+-   creates a bullet point (dash followed by a tab)
+
+**bolds the text**
+
+
+
+## Question 1: (Starting with the first chunk) Complete the following basic operations:
+-	Create/load an object called School and assign the value “Loyola” to School.
+-	Create/load an object called Freshman and assign the value 2985 (do not use a comma in 2985)
+-	Create/load an object called Soph and assign the value 3101 (do not use a comma in 3101)
+-	Create/load an object called Jr and assign the value 2848 (do not use a comma in 2848)
+-	Create/load an object called Senior and assign the value 3250 (do not use a comma in 3250)
+```{r}
+School = "Loyola"
+Freshman = 2985
+Soph = 3101
+Jr = 2848
+Senior = 3250
+
+
+```
+
+## Question 2:  Displaying the values of variable objects (remember, just type the object name and run the chunk)
+-	Display the value assigned to the object School 
+-	Display the value assigned to the object Freshman 
+-	Display the value assigned to the object Soph 
+-	Display the value assigned to the object Jr 
+-	Display the value assigned to the object Senior
+```{r}
+School
+Freshman
+Soph
+Jr
+Senior
+
+```
+
+
+## Question 3:  Basic calculations with objects (remember, just use R as a calculator: + , -, *, /)
+-	Display the value of Freshman + Soph + Jr + Senior (use the object names within the math problem, the values will be passed to get the result)
+-	Create/load an object called Enrolled and assign the value of Freshman + Soph + Jr + Senior (use the object names within the math problem, the values will be passed to get the result)
+```{r}
+Freshman + Soph + Jr + Senior
+Enrolled = Freshman + Soph + Jr + Senior
+Enrolled
+```
+
+## Question 4: Create a vector for the following (vectors use c() to combine different values into a one-dimensional object)
+-	Note: Vectors are loaded using the c() function. Separate each value with a comma. Remember, do not put quotes “” around numbers. For any text values, surround each value with quotes. Example: Name = c(“Kaitlyn”, “Hoffmann”)
+-	Create/load an object called Grades with the values 86, 92, 99
+-	Create/load an object called Ages with the values 19, 26, 20
+-	Create/load an object called Class with the values Jr, Sr, Sr
+```{r}
+Grades = c(86,92,99)
+Ages = c(19,26,20)
+Class = c("Jr","Sr","Sr")
+#This question had seniors doubled on the pdf. I do not know if this was intentional or not but I have followed the procedure as it was listed 
+
+```
+
+## Question 5: Displaying the values of vector objects
+-	Display the values assigned to the object Grades
+-	Display the values assigned to the object Ages
+-	Display the values assigned to the object Class
+```{r}
+Grades
+Ages
+Class
+
+
+```
+
+
+
+**ADD THE QUESTIONS BELOW AND A CHUNK FOLLOWING EACH TO THE HW1P2.RMD**
+
+## Question 6: Calculate the following using the vector objects and summary calculations (mean, median, sd, etc.)
+- Display the average (mean) of Grades -- example: mean(Grades)
+- Display the average (mean) of Ages
+- Display the standard deviation (sd) of Grades
+
+```{r}
+mean(Grades)
+mean(Ages)
+sd(Grades)
+```
+
+## Question 7: Creating/Loading in data frame objects from data files
+**This will import the data in the files to the data frame object student and customer**
+- Note: Save the file student.csv from SAKAI to the working directory folder location you have set
+- Note: Save the file customer.txt from SAKAI to the working directory folder location you have set; going forward
+we will always use .csv but this leads as an example of how a .txt file can be used to load data as well
+- Create/load the data “student.csv” using read.csv and call the object Student
+student = read.csv(“student.csv”)
+- Create/load the data “customer.txt” using read.delim and call the object Customer
+customer = read.delim(“customer.txt”, header = TRUE)
+```{r}
+student = read.csv("student.csv")
+customer = read.delim("customer.txt", header = TRUE)
+
+```
+
+
+## Question 6: Calculate the following using the data frame objects and summary calculations (mean, median, sd, etc.)
+- Display the average (mean) of the column weight from the object student -- example: mean(student$weight)
+- Display the average (mean) of the column height from the object customer
+```{r}
+mean(student$weight)
+mean(customer$height)
+```
+
+## Question 7: Display the summary results for a data frame object
+- Display the summary results for the object student -- example: summary(student)
+```{r}
+summary(student)
+```
+
+## Question 8: Display the summary results for a data frame object
+- Display the summary results for the object customer
+```{r}
+summary(customer)
+```
+
+## CREATE HTML FILE (no chunk needed for this)
+- Create an html file that will contain:
+- All the code
+- Executed outputs and answers to the follow-up questions, if there is any.
+- Click the arrow next to Knit and choose HTML
+- This process will save the Rmd file and create the html file on your working directory.
+

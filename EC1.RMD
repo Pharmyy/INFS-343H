@@ -1,0 +1,58 @@
+---
+title: "Business Analytics EC1"
+author: "Ryan Hensley"
+output:
+  html_document: 
+    code_download: TRUE
+    toc: TRUE
+---
+
+**Set the sub folder (where you have saved the files) as the working directory: Click Session --\> Set Working Directory --\> Choose Directory ... and select he sub folder where you saved the downloaded file(s) and click on OK.**
+
+
+# Tips and Tricks: Formatting in R Markdowns
+
+### Creates a header (need the space between the # and first character/text)
+-   creates a bullet point (dash followed by a tab)
+
+**bolds the text**
+
+
+# Extra Credit 1 Questions: 
+
+### Question 1: In the first R chunk, write the code to read in the data to a data frame object—you will know if the load was successful by checking for the data frame (house2) in the top-right pane (environment pane) after running the chunk
+
+-   house2 <- read.csv("house2.csv")
+-   Note: If the load does not work, check to make sure the RMD and data file (house2.csv) is  saved to your working directory folder; with that, also make sure you set the working directory for the session to that folder
+
+```{r}
+house2 = read.csv("house2.csv")
+
+```
+
+### Question 2: In the next chunk, write the code to display the data frame loaded. 
+
+-   code to display the data frame: house2
+-   Reminder: To display any object (data frame, vector, variable etc.) loaded to the session—you can see what is available by checking the top right pane—simply type the name of the object without quotes. Only values loaded, specifically categorical or character values, require quotes. 
+
+```{r}
+house2
+```
+
+**ADD REMAINING QUESTIONS AND CHUNKS FROM EC1 PDF**
+
+## Question 3: In a new chunk, calculate the following calculations in the same chunk (just put each on a new line within the chunk--remember R is case sensitive):
+- Average Price from house2 column Price—use mean()
+- Median Price from house2 column Price — use median()
+- Standard Deviation of Price from house2 column Price —sd()
+```{r}
+mean(house2$price)
+median(house2$price)
+sd(house2$price)
+```
+
+
+
+
+
+

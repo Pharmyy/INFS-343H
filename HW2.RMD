@@ -1,0 +1,229 @@
+---
+title: "Business Analytics Homework2"
+author: "Ryan Hensley"
+output:
+  html_document: 
+    code_download: TRUE
+    toc: TRUE
+---
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+
+
+### Formatting in R Markdowns
+
+### Creates a header (need the space between the # and first character/text)
+-   creates a bullet point (dash followed by a tab)
+
+**bolds the text**
+
+
+# Start Below
+
+## Question 1: Create a variable object (left) and assign the value to each (right)
+-   Course        "INFS 343"
+-   Semester      "Fall"
+-   Year          2023
+-   Location      "SCHR302"
+-   School        "Loyola"
+
+```{r}
+Course = "INFS 343"
+Semester = "Fall"
+Year = 2023
+Location = "SCHR302"
+School = "Loyola"
+```
+
+## Question 2:  Displaying the values of variable objects 
+-   Course 
+-   Semester 
+-   Year
+-   Location 
+-   School 
+```{r}
+Course
+Semester
+Year
+Location
+School
+
+```
+
+
+## Question 3:  Displaying the class of each variable object -   Course 
+-   Semester 
+-   Year
+-   Location 
+-   School 
+```{r}
+class(Course)
+class(Semester)
+class(Year)
+class(Location)
+class(School)
+
+```
+
+
+## Question 4:  Remove the objects using rm()
+- 	Course 
+- 	Semester 
+- 	Year
+- 	Location 
+- 	School 
+```{r}
+
+rm(Course)
+rm(Semester)
+rm(Year)
+rm(Location)
+rm(School)
+
+
+
+```
+
+
+## Question 5:  Create a vector object for each of the variables/columns below and assign the elements/values. Use quotes for the character values; do not use quotes for numeric/integer values. The object names are Division, City, Team, Wins, Loss, Tie.
+
+- 	Division    	City        	Team     	Wins    Loss   Tie
+- 	AFC North   	Cleveland   	Browns   	1      	 0       0
+- 	AFC North  	  Baltimore   	Ravens   	1      	 0       0
+- 	AFC North  	  Pittsburgh  	Steelers 	0     	 1       0
+- 	AFC North   	Cincinnati  	Bengals  	0     	 1       0
+- 	NFC North   	Green Bay   	Packers  	1    	   0       0
+- 	NFC North   	Detroit     	Lions    	1     	 0       0
+- 	NFC North   	Minnesota   	Vikings 	0     	 1       0
+- 	NFC North   	Chicago    	  Bears    	0     	 1       0
+```{r}
+Division = c("AFC North","AFC North","AFC North", "AFC North", "NFC North", "NFC North","NFC North","NFC North")
+City = c("Cleveland","Baltimore","Pittsburgh","Cincinnati","Green Bay", "Detroit","Minnesota","Chicago")
+Team = c("Browns","Ravens","Steelers","Bengals","Packers","Lions","Vikings","Bears")
+Wins = c(1,1,0,0,1,1,0,0)
+Loss = c(0,0,1,1,0,0,1,1)
+Tie = c(0,0,0,0,0,0,0,0)
+
+
+
+```
+
+**ADD THE QUESTIONS BELOW AND A CHUNK FOLLOWING EACH TO THE HW2.RMD**
+## Question 6: Display the values/elements of each vector object.
+Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.
+- Division
+- City
+- Team
+- Wins
+- Loss
+- Tie
+```{r}
+Division
+City
+Team
+Wins
+Loss
+Tie
+```
+
+## Question 7: Display the class of each vector object. Wins, Loss, and Tie should NOT be character (chr) or factor.
+- Division
+- City
+- Team
+- Wins
+- Loss
+- Tie
+```{r}
+class(Division)
+class(City)
+class(Team)
+class(Wins)
+class(Loss)
+class(Tie)
+```
+
+## Question 8: Create a logical vector (Local) that will check the Division vector--if the division is == "AFC North". Call this new logical vector Local. **Review the slides and text for creating logical vectors.**
+```{r}
+Local = Division == "AFC North"
+Local
+```
+
+## Question 9: Display the length of each vector object.
+- Division
+- City
+- Team
+- Wins
+- Loss
+- Tie
+- Local
+```{r}
+length(Division)
+length(City)
+length(Team)
+length(Wins)
+length(Loss)
+length(Tie)
+```
+
+## Question 10: Create a new data frame object called NFLnorth and combine the vectors below:
+- Division
+- City
+- Team
+- Wins
+- Loss
+- Tie
+- Local
+```{r}
+NFLnorth = data.frame(Division,City,Team,Wins,Loss,Tie,Local)
+```
+
+## Question 10: Display the new data frame object called NFLnorth.
+```{r}
+NFLnorth
+```
+
+## Question 11: Display the structure str() for the data frame object NFLnorth
+```{r}
+str(NFLnorth)
+```
+
+## Question 12: Run the summary() function to gather the summary statistics for the data frame NFLnorth
+```{r}
+summary(NFLnorth)
+```
+
+## Question 13: Run the code table(NFLnorth$Division) to see the count/frequency of teams for each division
+```{r}
+table(NFLnorth$Division)
+```
+
+## Question 14: Create the following Matrix and call the matrix object mat1:
+- 1 3 5
+- 20 24 40
+- 54 1 20
+```{r}
+mat1=matrix(c(1,3,5,20,24,40,54,1,20),ncol = 3,byrow = TRUE)
+```
+
+## Question 15: Display mat1
+```{r}
+mat1
+```
+
+### CREATE HTML FILE
+
+```
+
+```
+
+
+
+
+
+
+
+
+
+
+

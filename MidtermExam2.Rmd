@@ -1,0 +1,296 @@
+---
+title: "Midterm Exam"
+author: "Ryan Hensley"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    code_download: yes
+    toc: yes
+---
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+
+# Midterm Exam: 30 points Total 
+-   Good Luck!
+-   Make sure to review the Coding Policy posted to SAKAI to avoid losing points. Submit the Word Document to SAKAI alongside your Exam (no late work)!
+
+**---------------------------------------------------------------------------------------**
+
+# START: Data Types and Structures | Data Cleaning and Manipulaton 
+-   8 Points
+
+**---------------------------------------------------------------------------------------**
+
+
+## Load: Read the data from occup5.csv creating a new data frame called occup5 
+```{r}
+#Code: nothing needed this chunk, just run it
+occup5<-read.csv("occup5.csv")
+```
+
+## Look at the data: Display the first 6 rows of the data frame object occup5
+```{r}
+#Code: 
+head(occup5)
+```
+
+## NAs: Take a look at the number of NA (blank values), complete the following:
+-   a. How many NA values are in the hours column? Code and response. 
+-   b. What is the average hours (hint: remember if there are NA values you need rm.na=TRUE see cheat sheet) Code and response. 
+-   c. Change the NA values to the mean average hours   **only for the hours Column** 
+-   d. Remove the column occupID from occup5 (the first column)
+```{r}
+#------------------------------------
+#Code (a.): 
+sum(is.na(occup5$hours))
+
+#Response (a.): 2
+#------------------------------------
+#Code (b.): 
+mean(occup5$hours,na.rm=TRUE)
+
+#Response (b.): 47.21739
+#------------------------------------
+#Code (c.): 
+occup5$hours[is.na(occup5$hours)] = 47.21739
+
+
+
+#------------------------------------
+#Code (d.): 
+occup5$occupID = NULL
+
+```
+
+## Subset for non-NA: Create a subset (called occup5NoNA) that will remove all remaining rows with a NA value (na.omit) from occup5
+-   How many rows were removed from occup5 to occup5NoNA? Response. 
+```{r}
+#------------------------------------
+#Code: 
+occup5NoNA = na.omit(occup5)
+nrow(occup5)
+nrow(occup5NoNA)
+
+#Response: 1 
+
+```
+
+
+## Data Types: Review the data frame occup5NoNA Change the columns/variables to the most fit data type. **Make sure to use occup5NoNA this chunk**
+-   a. The data should have the following (total 7 columns): 2 factor, 2 integers (educ and age), 3 numeric. 
+-   b. Run str(occup5NoNA) 
+```{r}
+#------------------------------------
+#Code (a.): 
+str(occup5NoNA)
+occup5NoNA$satisfaction = as.factor(occup5NoNA$satisfaction)
+occup5NoNA$important = as.factor(occup5NoNA$important)
+
+
+
+#------------------------------------
+#Code (b.): 
+
+str(occup5NoNA)
+
+```
+
+
+**---------------------------------------------------------------------------------------**
+
+# END: Data Types and Structures | Data Cleaning and Manipulaton 
+
+**---------------------------------------------------------------------------------------**
+
+**---------------------------------------------------------------------------------------**
+
+# START: Descriptive Analytics 
+-   6 Points
+
+**---------------------------------------------------------------------------------------**
+
+## Load: Read the data from standardtests.csv creating a new data frame called results 
+```{r}
+#Code: nothing needed this chunk, just run it
+results = read.csv("standardtests.csv")
+```
+
+## Display the summary stats for results and complete the following: 
+-   a. Which column has the highest average between A, B, C, D, and E? 
+-   b. What was the median number of passed exams?  
+```{r}
+#------------------------------------
+#Code: 
+summary(results)
+
+
+#------------------------------------
+#Response (a.): A
+
+#Response (b.): 69.0
+
+```
+
+## Display a histogram for the variable passed; main="Passed Distribution", col = "orange"
+-   a. Based on the result, provide the approximate range (x-axis) of the bin from the histogram with the highest frequency.
+```{r}
+#------------------------------------
+#Code:
+hist(results$Passed,main = "Passed Distribution", col = "orange")
+
+
+#------------------------------------
+#Response (a.): 100
+```
+
+
+## Display the frequency table for city and complete  the following:
+-   a. How many tests were taken from Carbondale?
+```{r}
+#------------------------------------
+#Code: 
+table(results$City)
+
+
+#------------------------------------
+#Response (a.):32
+
+```
+
+
+## Display/tabulate the average Passed by the City for results.
+-   a. What is the average Passed for Chicago? Response. 
+```{r}
+#------------------------------------
+#Code: 
+tapply(results$Passed,results$City,mean)
+
+#------------------------------------
+#Response (a.):130.5882
+
+```
+
+
+
+**---------------------------------------------------------------------------------------**
+
+# END: Descriptive Analytics
+
+**---------------------------------------------------------------------------------------**
+
+**---------------------------------------------------------------------------------------**
+
+# START: Predictive Analytics | Regression
+-   14 Points
+
+**---------------------------------------------------------------------------------------**
+
+## Load: Read the data from insurance.csv creating a new data frame called insurance 
+```{r}
+#Code: nothing needed this chunk, just run it
+insurance=read.csv("insurance.csv")
+```
+
+
+## Calculate the following correlation coefficients looking to build a model to predict the charges 
+-   insurance (7 columns) looking to predict charges
+-   a. Which variable has the highest absolute correlation to charges?
+```{r}
+#------------------------------------
+#Code: 
+cor(insurance$charges,insurance[,1:7])
+
+#------------------------------------
+#Response (a.): smoker
+
+```
+
+## Complete the following: Regression Model and Summary
+-   Use a simple regression model to predict charges by using the highest correlated variable from the previous chunk as the independent variable. Call this model as R1
+-   Display the summary calculations for R1
+```{r}
+options(scipen=999)
+#------------------------------------------
+#Regression Model:
+R1 = lm(charges~smoker,data = insurance)
+
+#------------------------------------------
+#Summary of Model:
+summary(R1)
+
+
+#------------------------------------------
+```
+
+
+## Complete the following:  **Answer in chunk as a comment**: 
+
+-   What is the estimated regression equation?
+-   What percentage of the total variation in charges is explained by the regression (R2)?
+-   Is the independent variable significant in predicting the charges at significance level of 0.05? To answer this question, we need to test Ho that H1= 0 against the two-sided alternative. Should the null hypothesis be accepted or rejected at a 0.05 significance level?
+-   Conceptual Question: Keep it simple, what is the difference of a positive and negative correlation? 
+
+```{r}
+#------------------------------------------
+#Regression Equation:
+#Answer: Y = 8543.4 + 23536.5x
+
+
+#------------------------------------------
+#R2:
+##Answer: 0.6188 or 61.88% of the variation is is explained by the independent variable in the model
+
+
+
+#------------------------------------------
+#Hypothesis Testing:
+
+#Answer p-value: 0.0000000000000002 < 0.05
+#Decision/Response: Reject the null hypothesis [that smoker is not significant]; smoker is significant in predicting charges
+
+
+#------------------------------------------
+# Conceptual Question Response: Postive correlation means that as one value goes up the other also goes up. Negative correltaion is as one goes up the other goes down.
+
+#------------------------------------------
+```
+
+
+## Complete the following: Prediction and Confidence Interval
+
+-   Calculate the predicted average charges using a value of 1 for the independent variable.
+-   Construct a 95 percent confidence interval estimate for the mean charges using 1 for the independent variable value. (include correct interpretation)
+```{r}
+#------------------------------------------
+#Predict Code
+8543.4 + (23536.5*1)
+
+#Answer/Statement: the predicted average charges for a indiviudal with an smoker rate of 1 Is 32079.9 dollars
+
+#------------------------------------------
+#Confidence Interval Code
+
+predict(R1, data.frame(smoker=1), interval="confidence")
+
+#------------------------------------------
+#Confidence Interval Interpretation Response/Statement: With 95% confidence, we can say the charges with an smoker value of 1 would have a charges between 31143.69 and 33015.99
+#------------------------------------------
+```
+
+**---------------------------------------------------------------------------------------**
+
+# END: Predictive Analytics | Regression
+
+**---------------------------------------------------------------------------------------**
+
+
+
+# Knit to HTML
+-   2 points overall knit and completion
+-   Make sure to review the Coding Policy posted to SAKAI to avoid losing points. Submit the Word Document to SAKAI alongside your Exam (no late work)!
+
+
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**

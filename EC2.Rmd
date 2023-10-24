@@ -1,0 +1,119 @@
+---
+title: "Extra Credit 2"
+author: "Ryan Hensley"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    code_download: yes
+    toc: yes
+---
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+## R Markdown
+
+----------------------------------------------------------------------------------
+
+## Question 1: Load in the data house.csv as a data frame object called house
+```{r}
+house = read.csv("house.csv")
+```
+
+## Question 2: Display the first 5 rows of the data frame object house
+```{r}
+head(house,5)
+```
+
+## Question 3: Display the last 5 rows of the data frame object house
+```{r}
+tail(house,5)
+```
+
+## Question 4: Display the structure of the data frame house; look at the data types and make sure they are loaded appropriately
+```{r}
+str(house)
+```
+
+## Question 5: Display the total number of rows and columns in the data frame house
+-   what does the number of rows represent (conceptually)? Look at the data, see what each row represents. Comment your response using # within the chunk.
+```{r}
+#number of rows (code)
+nrow(house)
+#number of columns (code)
+ncol(house)
+
+# what does the number of rows represent (conceptually)?
+#Rows are equal to the number of houses
+```
+
+**ADD THE QUESTIONS BELOW AND A CHUNK FOLLOWING EACH TO THE EC2**
+## Question 6: Basic calculations:
+- What is the average lotsize from house?
+- What is the average bedroom from house?
+- What are the max tax from house?
+- What is the spread/standard deviation (variation) tax from house?
+- What is the range for tax from house?
+```{r}
+mean(house$lotsize)
+mean(house$bedroom)
+max(house$tax)
+sd(house$tax)
+max(house$tax)-min(house$tax)
+```
+
+## Question 7: Display the summary results for the data frame called house
+```{r}
+summary(house)
+
+```
+
+## Question 8: Display the summary results for each (BY) location separately for column 1 (value) only (points off if notcorrect view)
+- Analyze the results
+- Which location has the highest value on average (mean)? Comment your response using # within the chunk.
+- Which location has the lowest value on average (mean)? Comment your response using # within the chunk.
+
+```{r}
+by(house[,1],house$location,summary)
+#houseA
+#houseE
+```
+
+## Question 9: Display a frequency table for style from the data frame house
+- How many split level style houses? Comment your response using # within the chunk.
+```{r}
+table(house$style)
+#46
+```
+
+## Question 10: Display a table summarizing the Average (mean) tax by style from the data frame house
+```{r}
+tapply(house$tax,house$style,mean)
+```
+
+## Question 11: Display/Plot the distribution for the value using the data frame house (histogram)
+- add a color col="red"
+- add a title main = "House Value Distribution Table"
+```{r}
+hist(house$value,main = "House Value Distribution Table",col = "red")
+```
+
+## Question 12: Display a boxplot for value from the data frame house
+- add a color col = "limegreen"
+- add a title main = "House Value Distribution"
+```{r}
+boxplot(house$value,main = "House Value Distribution",col = "limegreen")
+```
+
+## Question 13: Display a boxplot for value by location from the data frame house
+- add a color col = "yellowgreen"
+- add a title main = "House Value Distribution by Location"
+```{r}
+boxplot(house$value~house$location,main = "House Value Distribution by Location", col = "yellowgreen")
+```
+
+### Knit to HTML
+
+
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**

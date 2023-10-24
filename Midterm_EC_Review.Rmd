@@ -1,0 +1,275 @@
+---
+title: "Business Analytics Midterm EC"
+subtitle: Business Analytics
+author: "Ryan Hensley"
+output:
+  html_document: 
+   code_download: yes
+   toc: yes
+---
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites.**
+
+**Be sure to read all the instructions and answer each question in-full. Submit the output in RMD and HTML.**
+
+**YOU DO NOT NEED TO CREATE ANY CHUNKS. RESPOND USING THE CHUNKS AND PROMPTS PROVIDED.**
+
+**DO NOT MODIFY ANY OF THE FORMATTING OF THE RMD.**
+
+
+Submit your R Markdown (RMD) and HTML to SAKAI
+
+**All interpretations are essential for points.**
+-   Meaning if the response requires a conceptual interpretation, do not just respond with the value R provide
+-   For instance, confidence intervals require proper interpretation (STATS REF)
+
+------------------------------------------------------------------------
+# Begin: Cleaning and Manipulation
+-   Data Types and Structures | NA Values
+------------------------------------------------------------------------
+
+**For this portion you will use the SchoolPreference.csv file**
+
+## Read the file SchoolPreference.csv into R as a dataframe
+-   Call the data frame object school
+```{r read_file}
+#Code: next line- nothing needed this chunk, you will use school for the descriptive section
+school<-read.csv("SchoolPreference.csv")
+```
+
+
+## Display the first 10 rows of the dataframe loaded (school)
+```{r display_results}
+#Code: next line 
+head(school,10)
+
+```
+
+## Display the structure of the columns of the data frame loaded (school)
+-   Look at each of the variables/columns loaded and notice which data types need modification which you will change in the next few chunks
+```{r structure_school}
+#Code: next line 
+str(school)
+```
+
+## Complete the following for the PerctBlended column:
+-   a. How many NA values are in the PerctBlended column? 
+-   b. Change the NA values to 0 -- only for the PerctBlended Column**
+```{r na_PerctBlended}
+#Code: Number of NA values in PerctBlended 
+sum(is.na(school$PerctBlended))
+
+#Answer the question as a comment:
+  ##Number of NA values in PerctBlended: 3
+
+
+#Code: Change NA values to 0 only in PerctBlended
+
+school$PerctBlended[is.na(school$PerctBlended)] = 0
+
+
+```
+
+
+## Looking at the data types, change the data to the appropriate data types
+-   a. There should be 3 factors
+-   b. There should be 3 integers
+-   c. There should be 2 numeric (num)
+-   d. Change the necessary columns to the appropriate data type (you may only need to change 3 depending on how the data loaded)
+```{r datatypes_school}
+#Code: next line to change any column/variable data types 
+
+school$District = as.factor(school$District)
+school$Disaggregation.Category = as.factor(school$Disaggregation.Category)
+school$Category = as.factor(school$Category)
+
+
+#Run str(school) to check results
+str(school)
+
+
+
+```
+
+## Create a subset that you will use later on, call this subset schoolAll
+-   To create the subset, use the column Category and only include those rows that have a value equal to All District
+```{r subset_AllDistrict}
+#Code: next line subset Category
+schoolAll = subset(school, school$Category == "All District")
+
+```
+
+## Create a vector, call it fullname and assign your first name and last name as two separate values (so one vector with 2 values assigned). After, display the vector fullname
+
+**Not using school, just creating a vector and displaying the vector**
+```{r vector_fullname}
+#Code: next line create vector fullname
+fullname = c("Ryan","Hensley")
+
+#Code: next line display vector fullname
+fullname
+
+```
+
+----------------------------------------------------------------------
+# End:  Data Cleaning and Manipulation 
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+# Begin: Descriptive Analytics
+- Summary Statistics | Visualizations
+----------------------------------------------------------------------
+
+**For this portion you will use the school subset schoolAll created in the Data Cleaning and Manipulation section above**
+
+**You will need to complete the Data Cleaning and Manipulation section prior to starting the Descriptive Analytics below**
+
+
+## Display summary statistics for ALL variables in the schoolAll data frame and answer the question.
+-   use the summary output to answer the questions within the chunk (commented)
+-   Question: What is the average Total Enrollment, PerctBlended, PerctRemote for the data schoolAll? Which Learning is preferred?
+```{r display_sumresults}
+#Code: next line using schoolAll
+summary(schoolAll)
+
+
+#Answer the following as a comment:
+  ##Average Total Enrollment:  25051 students       
+  ##Average PerctBlended: 0.2950  or 29.5%           
+  ##Average PerctRemote:   0.7050 or 70.5%           
+  ##Based on the results of PerctBlended and PerctRemote, what is the preference-- Blended Learning or Remote Learning?: Remote
+
+```
+
+
+**USE schoolAll**
+
+
+## Run the code that will display the average/mean NumRemote by District using schoolAll
+-   Which District had the largest average for NumRemote? Answer after the chunk.
+
+**Hint: the output of the table format should look like**
+-   **1       2     3        etc.**
+-   **[#]     [#]   [#]      etc.**
+```{r mean_NumRemotebyDistrict}
+#Code: next line using schoolAll
+tapply(schoolAll$NumRemote,schoolAll$District,mean)
+
+#Answer the following as a comment:
+  ##District Number with Highest NumRemote: District 2 
+
+```
+
+
+------------------------------------------------------------------------
+# End:  Descriptive Analytics
+------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------
+# Begin: Predictive Analytics
+- Regression 
+------------------------------------------------------------------------
+## Regression: For this portion you will use the TSLA.csv file
+
+## Read the file TSLA.csv into R as a data frame.
+-   Call the data frame object tesla
+```{r read_file_tesla}
+#Code: next line
+tesla<-read.csv("TSLA.csv")
+```
+
+
+## Displaying Tesla-no code needed in this chunk, make sure the data types loaded in correctly (do not worry about converting the date)
+-   Date, Open, High, Low, Close, Volume refer to Tesla stock data
+```{r display_tesla}
+head(tesla)
+str(tesla)
+```
+
+
+## Calculate the following correlation coefficients looking to build a model to predict the Close (price) of the tesla stock
+-   tesla (4 columns) looking to predict Close
+## Answer the following:
+-   Which relationship has the highest correlation with Close?
+-   Which relationship has the second highest correlation with Close?
+
+```{r cor_tesla}
+#Code: next line for cor() -- you will need 4 cor() statements
+cor(tesla$Close,tesla$Open)
+cor(tesla$Close,tesla$High)
+cor(tesla$Close,tesla$Low)
+cor(tesla$Close,tesla$Volume)
+
+#Answer the following as a comment:
+  ##Highest correlation co-efficient (comment the column name): Low
+  ##Second highest correlation co-efficient (comment the column name): Open
+
+```
+# Simple Regression:
+
+## Use a simple regression model to predict the Close price from tesla by using the highest correlated variable from the previous chunk
+-   Call this model as R1. Display the summary calculations in R1.
+```{r regression_m}
+options(scipen=999)
+#Code: Regression Model R1
+R1 = lm(Close~Low, data = tesla)
+
+#Code: Summary calculations R1
+summary(R1)
+
+
+```
+
+## Using the summary results from the previous chunk, comment the following answers: 
+-   a. What is the estimated regression equation?
+-   b. What percentage of the total variation in charges is explained by the regression (R_square)? -   c. Hypothesis: Is the number of [Highest Correlated Variable] significant in predicting the charges at significance level of 0.05?
+
+```{r}
+#Answer the following as a comment (no code this chunk):
+  #Answer (a. Regression Equation): Y = 59.27306 + 0.91617x
+  #Answer (b. R-Squared): 0.892 or 89.2 percent is explained
+  #Answer (c. Hypothesis Testing): answer the p-value and Decision
+    #p-value (< or > alpha of 0.05): p value = 0.0000000000000002 < 0.05 
+    #Decision: Reject the null hypothesis [that Low is not significant]; Low is significant in predicting Close values
+
+```
+
+## Calculate the predicted charges of the Independent variable Use the value 95 
+```{r}
+##Code Next line to predict where your independent variable is equal to 95:
+ 59.27306 + (0.91617*95)
+#146.3092
+
+```
+
+## Construct a 95 percent confidence interval estimate of the Independent variable Use the value 95 
+```{r predictreg}
+#Code: Predict: Confidence Interval
+predict(R1, data.frame(Low = 95), interval="confidence")
+
+#Answer the following as a comment:
+  ##Answer (Response): With 95% confidence, we can say tesla stock with a 95 low would have a close value between 137.6889 and 154.9295
+
+```
+
+**Note for Fall23: Expect a few conceptual questions from slides and text built in as well.**
+
+
+------------------------------------------------------------------------
+# End:  Predictive Analytics
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+# End:  
+------------------------------------------------------------------------
+
+
+### CREATE HTML FILE
+Create an html file that will contain 
+    #	all the codes 
+    #	executed outputs and 
+    #	answers to the follow-up questions, if there is any. 
+    
+    
+    
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites.**

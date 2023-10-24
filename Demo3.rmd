@@ -1,0 +1,345 @@
+---
+title: "Chapter 3 Demo"
+author: "Kaitlyn Hoffmann"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    code_download: yes
+    toc: yes
+---
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+## R Markdown
+
+----------------------------------------------------------------------------------
+
+## Create variables for the following and assign the value: 
+
+-   name "[your name]"
+-   year "Senior"
+-   currentyear 2023
+
+
+```{r}
+name = "Kaitlyn"
+year = "Senior"
+currentyear = 2023
+
+
+```
+
+## Display the results and Check the class of each of the variables: name, year, currentyear, ID
+
+-   results of each variable (what is the value)
+-   class of each (what is the data type)
+
+```{r}
+#Results (display)
+name
+year
+currentyear
+
+#Class (data type)
+class(name)
+class(year)
+class(currentyear)
+
+
+```
+
+## Change the data types as listed for the variables below:
+
+
+-   name char (character)
+-   year factor 
+-   currentyear int (integer)
+
+
+-   Rerun the class on each and display the results 
+
+```{r}
+#Change the data types 
+year = as.factor(year)
+currentyear = as.integer(currentyear)
+
+
+#Display the data types using class
+class(name)
+class(year)
+class(currentyear)
+
+
+```
+
+----------------------------------------------------------------------------------
+
+# Nike Data for Cleaning and Manipulation
+
+## Load/Create a data frame for the data file called nikedata.csv; call the object nike
+
+```{r}
+
+```
+
+## Display the structure for nike
+```{r}
+
+```
+## Display the first 10 rows for nike using head(); note: default is 6
+```{r}
+
+```
+
+## Display the last 10 rows for nike using tail(); note: default is 6
+```{r}
+
+```
+
+## Display the unique values for the following columns from the data frame nike:
+-   note: this can also be used to create a new subset for only unique values (remove dups)
+
+-   Events
+-   Factory_Type
+```{r}
+
+
+
+```
+
+## Display the column names for the data frame object called nike 
+```{r}
+#Can use either colnames(nike) or names(nike)
+
+
+
+```
+
+## Match the following column names and display the names after changing to confirm
+
+-   Factory_Name 
+-   Factory_Type
+-   Product_Type
+-   Brand 
+-   Events
+-   SupplierGroup
+-   Address
+-   City
+-   State
+-   Country_Region
+-   Region
+-   Total_Workers
+-   Line_Workers
+-   Perct_Female_Workers
+-   Perct_Migrant_Workers
+
+```{r}
+#Change the column names
+
+
+
+
+#Display column names
+
+
+
+
+```
+
+## Match the following data types and after run str() to check the changes: 
+
+-   Factory_Name    |   chr
+-   Factory_Type    |   factor   
+-   Product_Type    |   factor
+-   Brand           |   chr
+-   Events          |   factor
+-   SupplierGroup   |   chr
+-   Address         |   chr
+-   City            |   chr
+-   State           |   chr
+-   Country_Region  |   chr
+-   Region          |   chr
+-   Total_Workers   |   integer
+-   Line_Workers    |   integer
+-   Perct_Female_Workers  |   numeric     
+-   Perct_Migrant_Workers |   numeric
+
+```{r}
+#Change the data types for data frame variables (columns)
+
+
+
+
+#Display data frame structure (str)
+
+
+
+```
+
+
+## Display the number or rows and columns from nike (nrow and ncol)
+```{r}
+#number or rows
+
+
+
+#number of columns
+
+
+```
+
+## Diplay the total number of NA values from the data frame nike using the following: 
+-   is.na()
+-   sum(is.na())
+-   which(is.na())
+```{r}
+nike[nike==""] = NA #changes any "" to NA 
+
+
+
+
+```
+
+## Display the following rows: dataframe[rows, columns]
+-   20
+-   32
+-   95
+
+```{r}
+
+
+
+
+```
+
+
+## Display the following rows for columns 12 to 15:
+-   20
+-   32
+-   95
+
+```{r}
+
+
+```
+
+## Change a single value within nike for the following rows and columns:
+-   Row 20, Column 1 = "ATOM"
+-   Row 20, Column 12 = 120
+-   Row 20, Column 13 = 68
+-   Row 20, Column 14 = 62
+-   Row 20, Column 15 = 38
+-   Row 626, Column 14 = 64
+```{r}
+
+
+
+
+```
+
+
+## Change multiple values within nike for Events:
+-   use is.na to change all NA or Blanks within Events to "NONE"
+-   use gsub to change all USA values to United States for Country_Region column
+
+-   ^ start
+-   $ stop
+```{r}
+#Change all NA values in Events to "NONE"
+#sum(is.na(nike$Events)) #no NA values in Events? Because they loaded as ""
+#nike$Events[nike$Events==""] = NA #changing the "" to NA
+#nike$Events[is.na(nike$Events)] = "NONE" #now change using is.NA or use the below to do the same as the lines above with gsub (removes the step of converting "" to NA)
+#nike$Events = gsub("^$", "NONE", nike$Events)
+
+#Change NA to NONE for Events using is.na
+
+
+#Change USA to United States for Country_Region using gsub
+
+
+
+
+
+#Display unique values for Country_Region and Events
+
+```
+
+## Use na.omit to remove any rows with NA from nike creating a new data frame object called nike2
+```{r}
+
+```
+
+## Calculate how many rows were removed using nrow
+```{r}
+
+```
+
+## Add a new column to nike2 called Perct_Line_Workers based on Line_Workers divided by Total_Workers (use round(<calc>,2) to change the decimal places)
+```{r}
+
+
+```
+
+## Create a new column to nike2 called NikeOnly based on whether the column Brand is equal to Nike 
+```{r}
+
+
+```
+
+## Create a new column to nike2 called NotUSA based on whether the Country_Region is not equal to United States
+```{r}
+
+
+```
+
+## Create a subset from nike2 based on whether the NotUSA column is equal to False and call it nikeUSA
+```{r}
+
+
+```
+
+## Remove the column NotUSA from the data frame nikeUSA 
+```{r}
+
+
+```
+
+## Create a subset from nike2 based on whether the nikeONLY column is equal to False using [Rows, Columns] call the new data frame nikeOTHER
+```{r}
+
+
+```
+
+## Display an aggregate for nikeOTHER based on the Product_Type and average Total_Workers
+```{r}
+
+
+```
+## Display an aggregate for nikeOTHER based on the Product_Type, Region and average Total_Workers
+```{r}
+
+
+```
+
+
+## Display the sorted Country_Region column from nikeOTHER ascending 
+```{r}
+
+
+```
+
+## Save the order/sort for the data in nikeOTHER ordered by the Country_Region column
+```{r}
+
+
+```
+
+
+
+### Knit to HTML
+
+
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**

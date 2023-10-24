@@ -1,0 +1,111 @@
+---
+title: "Chapter 1 Demo"
+author: "Kaitlyn Hoffmann"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    code_download: yes
+    toc: yes
+---
+
+# Create new Rmd
+
+### Add a chunk
+```{r}
+
+
+
+```
+
+
+
+
+#### Get the current working directory path (getwd()) and files (dir())
+```{r}
+getwd()
+
+dir()
+
+```
+
+#### Set a path within a chunk for the working directory
+```{r}
+setwd("C:/Users/khoffmann/Desktop/BusinessAnalytics/Videos")
+```
+
+
+### Adding a new chunk to add a numerical variable called Price
+```{r}
+#Comments will be in green and ignored by R when running the chunk
+#use a pound symbol (hashtag) to comment
+
+#Display a value 20
+20
+
+#Assign the value 20 to a new variable called Price
+Price = 20
+
+#Display Price
+Price
+
+```
+
+```{r}
+#Change the value of Price from 20 to 30
+Price = 30
+
+#Display Price
+Price
+
+```
+
+### Install a package called rmarkdown ;
+- select line 43 and click on Run selected line or Ctrl+Enter (Cmd+Enter)
+- having install.packages code within a chunk can cause issues when knitting to HTML
+
+install.packages("rmarkdown") 
+
+
+```{r}
+#errors you may encounter
+
+#case sensitivity
+rm(Price)
+
+#quotations
+#student <- read.csv("student.csv") #this file is not in my working directory
+#knitting issue if there is a code error
+
+```
+
+
+
+
+
+### Loading in data from the Excel (.csv) file ;
+```{r}
+#object name followed by the assignment statement then the funtion read.csv() with the filename saved to your computer in quotes within the parenthesis (object = read.csv("filename"))
+
+realestate = read.csv("RealEstate_HouseData.csv")
+
+
+```
+
+
+### Display the object realestate ;
+```{r}
+#to display any object simply type the object name assigned
+
+realestate
+
+```
+
+
+
+
+
+
+
+
+
+
