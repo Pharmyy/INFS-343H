@@ -1,0 +1,138 @@
+---
+title: "Homework 8 Part 2"
+author: "Ryan Hensley"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    code_download: yes
+    toc: yes
+---
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+#   Optimization: Homework 8 Part 2
+
+## Questions:
+
+### Question 1: Formulate the linear programming model for this problem.
+-   Use # to comment below each question (for each line)
+
+```{r}
+#----------------------------------
+#a. Define the decision variables
+#FoodItem1, FoodItem2,FoodItem3,FoodItem4
+
+
+#----------------------------------
+#b. Formulate the objective function
+#minimize total cost = 1FoodItem1 + 0.4FoodItem2 + 0.6FoodItem3 + 1.8FoodItem4
+ 
+#----------------------------------
+#c. State the constraints.
+# **LABEL THE CONSTRAINT | Do not forget to also list the non-negativity constraints**
+
+# 400FoodItem1 + 200FoodItem2 + 150FoodItem3 + 500FoodItem4 >= 500 Calories 
+#3FoodItem1 + 2FoodItem2 + 0FoodItem3 + 0FoodItem4 >= 6 grams of protein 
+#2FoodItem1 + 2FoodItem2 + 4FoodItem3 + 4FoodItem4 >= 10 grams of carbohydrates
+#2FoodItem1 + 4FoodItem2 + 1FoodItem3 + 5FoodItem4 >= 8 grams of protein 
+
+#Non-Negativity 
+#FoodItem1 >=0 
+#FoodItem2 >=0 
+#FoodItem3 >=0 
+#FoodItem4 >=0 
+
+#----------------------------------
+``` 
+ 
+
+### Install lpSolve and run the library
+
+-   select the line below and click on Run selected line or Ctrl+Enter (Cmd+Enter)
+-   having install.packages code within a chunk can cause issues when knitting to HTML
+
+
+install.packages("lpSolve")
+
+
+
+### Load the lpSolve library to use the lp function
+-   Call the library function "lpSolve". You need to execute this library function each time when you run linear programming
+```{r}
+#no code needed this chunk, just run it
+library (lpSolve) 
+```
+
+
+
+
+### Question 2:	Enter the problem data and find the optimum solution for this problem using R Studio 
+-   Load the elements: 
+
+-   objective, constr, constr.dir, rhs (from cheat sheet)  -OR-
+-   ObjFunc, LeftSide, OpDirections, RightSide (from textbook/demo) 
+
+```{r}
+ObjFunc = c(1, 0.4, 0.6,1.8) #-   #minimize total cost = 1FoodItem1 + 0.4FoodItem2 + 0.6FoodItem3 + 1.8FoodItem4
+
+leftsidevector = c(400,200,150,500,3,2,0,0,2,2,4,4,2,4,1,5)
+
+LeftSide = matrix(leftsidevector, nrow = 4, byrow=TRUE)
+
+OpDirections = c(">=",">=",">=",">=")
+RightSide = c(500,6,10,8)
+
+```
+
+### Question 3: Run the lp function (optimum code from cheat sheet; lpmodel from textbook/demo)
+```{r}
+lpmodel = lp(direction = "min", ObjFunc, LeftSide, OpDirections, RightSide, compute.sens = T)
+```
+
+
+### Question 4: Display the solutions from the optimum solution 
+-   a. Display the solution values 
+-   b. Display the objective value 
+-   c. Display the dual values 
+```{r}
+lpmodel$solution
+lpmodel$objval
+lpmodel$duals
+
+
+
+```
+
+### Question 5: Answer the questions inside the chunk using # to comment 
+-   What are the dual values for the calorie, protein, carbohydrate, and fat requirements?
+-  How much would the cost increase if the diet required one additional gram of calorie (501 grams instead of 500)? 
+```{r}
+#--------------------
+# What are the dual values for the calorie, protein, carbohydrate, and fat requirements?
+#Calorie = 0.00
+#Protein = 0.05
+#Carbohydrate = 0.15
+#Fat = 0.00
+
+
+#--------------------
+# How much would the cost increase if the diet required one additional gram of calorie (501 grams instead of 500)? 
+
+# It would increase by 0 
+
+
+
+#--------------------
+```
+
+
+
+
+### Knit to HTML
+
+
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+

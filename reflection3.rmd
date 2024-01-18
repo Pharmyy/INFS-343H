@@ -1,0 +1,108 @@
+---
+title: "Reflection 3"
+author: "Ryan Hensley"
+date: "2023-11-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+#Question 
+#In the dynamic city of Autotropolis, AutoTech Innovations sought to optimize its car assembly line with clear constraints. The production limit was set at 500 cars daily, with standard cars produced at 4 units per hour and luxury cars at 3 units per hour. With a budget cap 1000000, production costs of $15,000 for standard cars, and $25,000 for luxury cars, the objective was to maximize efficiency 
+```{r}
+#----------------------------------
+#a. Define the decision variables
+#standard cars, luxury cars
+
+
+
+ 
+#----------------------------------
+#b. Formulate the objective function
+     
+#maxmize efficeiny = 4S + 3L
+
+    
+ 
+#----------------------------------
+#c. State the constraints.
+# **LABEL THE CONSTRAINT | Do not forget to also list the non-negativity constraints**
+# S+L <= 500(daily production limit)
+#4S+3L <= 480 minutes (8 hour work day * 60 minutes)
+#15000S + 25000L<=10000000(Budget Limit)
+#1L+0S >= 1
+#0L+1S >=1
+
+#Non negaticity constraints
+#S>=0
+#L>=0
+
+#----------------------------------
+```
+
+
+```{r}
+library (lpSolve) 
+```
+
+
+```{r}
+# Objective Function
+ObjFunc <- c(4, 3)  # maximize efficiency = 4S + 3L
+
+# Left side of the constraints
+leftsidevector <- c(1, 1, 4, 3, 15000, 25000,1,0,0,1)
+LeftSide <- matrix(leftsidevector, nrow = 5, byrow = TRUE)
+
+# Operator Directions
+OpDirections <- c("<=", "<=", "<=",">=",">=")
+
+# Right side of the constraints
+RightSide <- c(500, 480,10000000,1,1)
+
+```
+
+
+
+```{r}
+lpmodel = lp(direction = "max", ObjFunc, LeftSide, OpDirections, RightSide, compute.sens = T)
+```
+
+```{r}
+#Display the solution values
+#Display the objective value
+#Display the dual values
+
+lpmodel$solution
+lpmodel$objval
+lpmodel$duals
+
+ 
+```
+
+
+```{r}
+# What are the dual values? List and label each.
+
+#Daily production Limit: 0
+#Minutes :1
+#Budget Limit: 0
+#Min 1 standard car:0
+#Min 0 standard car:0
+#min 1 luxury car:0
+#min 0 luxury car:0
+
+
+
+#--------------------
+# How much would the efficiency increase if we we increase the production limit by 40. 
+#0
+
+#The optimum number of standard cars to make is 119.5 and the optimum number of luxury cars to produce is 1. This means the company is bet5r of producing standard cars. Further this makes sense as to max the efficiency within the budget cap they should produce more standard cars. 
+
+```
+

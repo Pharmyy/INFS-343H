@@ -1,0 +1,173 @@
+---
+title: "Homework 9"
+author: "Ryan Hensley"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    code_download: yes
+    toc: yes
+params:
+  numberoftimestosimulate: 10
+  quantity: 75
+  purchaseprice: 1.50
+  sellprice: 3
+  salvagevalue: 1.50
+---
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+
+
+### Formulation
+
+
+```{r}
+#parameters (params) in the header were defined and can be set within the header
+
+#add the problem variable values to the parameters (params) in the header--make sure not to use quotes (they are numbers)
+quantity = params$quantity
+purchaseprice = params$purchaseprice
+sellprice = params$sellprice
+shortagecost = sellprice - purchaseprice
+salvagevalue = params$salvagevalue
+n = params$numberoftimestosimulate #number of times to simulate 
+```
+
+#### Display the parameters set (params in the header)
+```{r}
+params
+```
+
+### Loading the problem into R
+
+
+#### Demand distribution table for random number
+
+- this may vary based on previous behavior of past data
+```{r}
+#add code here for distribution table: PastDemand, Probability, BucketMinNum, BucketMaxNum -- each will be loaded as a vector
+#After, create a data frame called DistTable combining each of the vectors created
+
+PastDemand = c(65,70,75,80)
+Probability = c(.25,.25,.30,.20) # must equal 100 
+BucketMinNum=c(0,25,50,80)
+BucketMaxNum = c(25,50,80,100) #(0-99 is the rand number range) loaded 10,30,80,100 because < operator -could have changed the code too 
+DistTable = data.frame(PastDemand,Probability,BucketMinNum, BucketMaxNum)
+
+
+
+
+```
+
+#### Display the demand distrubution table
+```{r}
+DistTable
+```
+
+#### Generating the random numbers and creating the data frame called sim
+```{r}
+RandNumber = round(runif(n, 0, 99), 0) #round zero places (whole number/integer)   
+#runif(n, 0, 99) #generates the random number range 0-99
+sim = data.frame(RandNumber) # create the data frame to add columns
+```
+
+
+#### Demand based on randomnumber (RandNumber)
+```{r}
+b = nrow(DistTable) #4 buckets can change depending on the problem
+
+#loop through each row in sim for random number to determine which bucket/demand to assign as the demand value
+#the outer loop, for (i in 1:n) { } uses n which is the numberoftimestosimulate (10)
+  #so the first time for(i in 1:10) {} - i will change each loop from 1 to 10
+#the inner loop is focused on the DistTable to take the current random number from the sim table (i) and checking the bucket min and max to determine which bucket and demand to assign. The demand is then determined and assigned to the current row value in sim for Demand.
+for (i in 1:n) {
+  for (y in 1:b) {
+    if(sim$RandNumber[i] > DistTable$BucketMinNum[y] & sim$RandNumber[i] < DistTable$BucketMaxNum[y]){ #If the random number meets the min and max criteria then 
+             Demand=DistTable$PastDemand[y] #apply the PastDemand from DistTable to Demand
+                sim$Demand[i]=Demand #assign Demand to the current row number in the outer loop for Demand
+     }
+   
+  }
+}
+```
+
+#### Get sold min(demand (column 2), quantity)
+```{r}
+for (i in 1:n) {#looping through the sim table
+  Sold <- min(sim[i,2], quantity) #assigning the min value of the quantity param and the current rows (i) demand value (column 2 in sim)
+     sim$Sold[i] <- Sold #assigning the value to the current row in a new column Sold
+}
+```
+
+#### Get sales (sellprice (column 3) * sold)
+```{r}
+for (i in 1:n) {#looping through the sim table
+  Sales <- sim[i,3]*sellprice #current row in sim for sold (column 3) multiplied by the sellprice param value set 
+     sim$Sales[i] <- Sales #assigning the value to the current row in sim for a new column called Sales
+     
+}
+```
+
+#### Get purchase cost *assumes static value (quantity*purchaseprice)
+```{r}
+for (i in 1:n) {#looping through the sim table
+  Purchase <- quantity*purchaseprice #quantity param set multiplied by the purchaseprice param set 
+     sim$Purchase[i] <- Purchase #assigning Purchase to the current row in sim for a new column called Purchase
+}
+```
+
+#### Loss (Shortage) Cost $ [MAX of Demand (column 2) -quantity or 0] times shortagecost
+```{r}
+for (i in 1:n) {#looping through the sim table
+  Shortage <- max((sim[i,2]-quantity),0)*shortagecost #Current row in sim for Demand subtracted by the quantity param set (if negative then 0-max) multiplied by the shortagecost param set 
+     sim$Shortage[i] <- Shortage #assigning Shortage to the current row in sim for a new column called Shortage
+     
+     #Shortage Cost is the profit foregone (purchaseprice-sellprice)
+}
+```
+
+#### Salvage cost $ [MAX of quantity - Demand (column 2) or 0] times salvagevalue
+```{r}
+for (i in 1:n) {#looping through the sim table
+  Salvage <- max((quantity-sim[i,2]),0)*salvagevalue #The quantity param set subtracted by the current row in sim for Demand (if negative then 0-max) multiplied by the salvagevalue param set 
+     sim$Salvage[i] <- Salvage #assigning Salvage to the current row in sim for a new column called Salvage
+}
+```
+
+#### Sales + Salvage - Purchase - Shortage assuming no inventory fees *basic model
+```{r}
+for (i in 1:n) {
+  Profit <- sim[i,4] + sim[i,7] - sim[i,5] - sim[i,6] 
+  #Total for Sales + Salvage - Purchase - Shortage
+     sim$Profit[i] <- Profit #assigning Profit to the current row in sim for a new column called Profit
+}
+```
+
+### Display sim 
+```{r}
+sim 
+```
+
+### Reviewing the results using descriptive analytic techniques
+
+```{r}
+#summary sim without column 1 (RandomNumber)
+summary(sim[,-1])
+```
+
+
+```{r}
+metric <- c("total profit", "average profit", "count of shortages", "total shortages (#)", "total shortage ($)", "count of salvages", "total salvage (#)", "total salvage ($)")
+#creating a vector with the description of each summary result
+
+result <- c(sum(sim$Profit), mean(sim$Profit), sum(sim[,6] > 0), sum(sim[,6])/shortagecost,  sum(sim[,6]), sum(sim[,7] > 0), sum(sim[,7])/salvagevalue, sum(sim[,7]))
+#calculating the summary result in order of the metric vector
+
+SummaryResults <-data.frame(metric, result) #creating a data frame with the results
+SummaryResults
+```
+
+### Knit to HTML
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**

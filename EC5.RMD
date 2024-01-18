@@ -1,0 +1,133 @@
+---
+title: "Extra Credit 5"
+author: "Ryan Hensley"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    code_download: yes
+    toc: yes
+---
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+#   Optimization: Extra Credit
+
+## Questions:
+
+### Question 1: Formulate the linear programming model for this problem.
+-   Use # to comment below each question (for each line)
+```{r}
+#----------------------------------
+#a. Define the decision variables
+#Super coffee = s
+#Deluxe coffee = d
+
+ 
+#----------------------------------
+#b. Formulate the objective function
+     
+#maximize profit = 0.22s+0.3D
+
+    
+ 
+#----------------------------------
+#c. State the constraints.
+# **LABEL THE CONSTRAINT | Do not forget to also list the non-negativity constraints**
+
+
+#brazil 0.5s + 0.25d <= 120 brazilian blend kg
+#Columbian 0.5s + 0.75d <= 160 columbian kg 
+
+#s,d>=0
+
+
+#----------------------------------
+``` 
+ 
+
+### Install lpSolve and run the library
+
+-   select the line below and click on Run selected line or Ctrl+Enter (Cmd+Enter)
+-   having install.packages code within a chunk can cause issues when knitting to HTML
+
+
+install.packages("lpSolve")
+
+
+
+### Load the lpSolve library to use the lp function
+-   Call the library function "lpSolve". You need to execute this library function each time when you run linear programming
+```{r}
+#no code needed this chunk, just run it
+library (lpSolve) 
+```
+
+
+
+
+### Question 2:	Enter the problem data and find the optimum solution for this problem using R Studio 
+-   Load the elements: 
+
+-   objective, constr, constr.dir, rhs (from cheat sheet)  -OR-
+-   ObjFunc, LeftSide, OpDirections, RightSide (from textbook/demo) 
+
+```{r}
+
+ObjFunc = c(0.22, 0.3) #-   #maximize profit = 0.22s+0.3D
+
+leftsidevector = c(0.5,0.25,0.5,0.75)
+
+LeftSide = matrix(leftsidevector, nrow = 2, byrow=TRUE)
+
+OpDirections = c("<=","<=")
+RightSide = c(120,160)
+
+```
+
+### Question 3: Run the lp function (optimum code from cheat sheet; lpmodel from textbook/demo)
+```{r}
+lpmodel = lp(direction = "max", ObjFunc, LeftSide, OpDirections, RightSide, compute.sens = T)
+```
+
+
+### Question 4: Display the solutions from the optimum solution 
+-   a. Display the solution values 
+-   b. Display the objective value 
+-   c. Display the dual values 
+```{r}
+lpmodel$solution
+lpmodel$objval
+lpmodel$duals
+
+```
+
+### Question 5: Answer the questions inside the chunk using # to comment 
+-   a. What are the dual values? List and label each.
+-   b. How much would the profit increase if we had 10 more kg of Colombian coffee on hand?
+```{r}
+# a. What are the dual values? List and label each.
+
+#0.06 brazilian
+#0.38 columbian 
+#0.00 super 
+#0.00 deluxe
+
+# b. How much would the profit increase if we had 10 more kg of Colombian coffee on hand?
+
+
+#3.8 dollars
+
+
+```
+
+
+
+
+### Knit to HTML
+
+
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+

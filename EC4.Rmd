@@ -1,0 +1,105 @@
+---
+title: "Extra Credit 4"
+author: "Ryan Hensley"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    code_download: yes
+    toc: yes
+---
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+# Classification: Decision Trees
+#-----------------------------------------------
+Install the packages
+
+install.packages("rpart")        #needs to be installed only once
+install.packages("rpart.plot")  # needs to be installed only once
+
+#-----------------------------------------------
+
+## Load/Call each library (rpart and rpart.plot). Needs to be called each time
+```{r}
+library (rpart)
+library (rpart.plot)
+```
+
+
+
+
+## Question 1: Read in the titanic data file and assign it to a data frame called titanic   
+```{r}
+titanic = read.csv("titanic.csv")
+```
+
+## Question 2: Remove the first two columns (Name and Ticket) before splitting the data into train and test/val
+```{r}
+titanic = titanic[,-c(1:2)]
+
+```
+
+
+
+## No Code needed, just run (Question 3): Now, we want to split the data frame titanic into 2 subsets (randomly). One to create/train the model and one to test/validate the model trained. The code in the chunk will do this for you and split the set into train using 70% of the rows; the remaining 30% of rows will be split into the test data frame. The code is also at the end of this document to explain what it is doing if you are interested. **Going forward, you will not use titanic (after you remove the first two columns and run the chunk to split the data frame titanic into two subsets--train and test).**
+
+```{r}
+## 70% of the sample size
+smp_size <- floor(0.70 * nrow(titanic))
+## set the seed to make your partition reproducible
+set.seed(123)
+train_ind <- sample(seq_len(nrow(titanic)), size = smp_size)
+train <- titanic[train_ind, ]
+test <- titanic[-train_ind, ]
+```
+
+
+
+
+**ADD REMAINING QUESTIONS FROM THE EC4.PDF**
+
+## Question 4: Run the decision tree function (on the training data) to predict the Survived by using the other variables
+```{r}
+titanicModel = rpart(Survived~.,train,method="class")
+```
+
+
+## Question 5: Display the decision tree
+
+```{r}
+rpart.plot(titanicModel,type = 4,extra = 101)
+```
+
+
+## Question 6: Predict the Survived levels for the test data frame
+```{r}
+p = predict(titanicModel,test,type="class")
+```
+
+
+## Question 7: Add the predicted Survived types as a new column in the test/validation data call the new column titanicpredict
+```{r}
+test$predicted = p 
+```
+
+
+## Question 8: Display the contingency table between the observed and predicted Survived • Hint: observed variable/column: Survived | predicted variable/column: titanicpredict
+```{r}
+table(test$Survived,test$predicted)
+```
+
+
+## Question 9: Calculate the prediction accuracy of the decision tree model. Comment the accuracy % in the chunk. 
+
+```{r}
+table(test[ ,c(1,9)])
+(139+69)/nrow(test)
+#77.6% accurate
+```
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+
+

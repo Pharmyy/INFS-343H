@@ -1,0 +1,157 @@
+---
+title: "Homework 8 Part 1"
+author: "Ryan Hensley"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    code_download: yes
+    toc: yes
+---
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+#   Optimization: Homework 8 Part 1
+
+## Questions:
+
+### Question 1: Formulate the linear programming model for this problem.
+-   Use # to comment below each question (for each line)
+```{r}
+#----------------------------------
+#a. Define the decision variables
+#kettlebells, dumbells, plates
+
+
+
+ 
+#----------------------------------
+#b. Formulate the objective function
+     
+#maxmize profit = 50k + 25d + 40p
+
+    
+ 
+#----------------------------------
+#c. State the constraints.
+# **LABEL THE CONSTRAINT | Do not forget to also list the non-negativity constraints**
+#2k + 0.5d+ 1p <= 250 labor hours 
+#1k + 0.5d + 1p <= 200 machine hours 
+#25k + 10d + 25p <= 4000 raw material
+#0k + 1d + 0p <=200 steel
+
+#k>=0
+#d>=0
+#p>=0
+
+#----------------------------------
+``` 
+ 
+
+### Install lpSolve and run the library
+
+-   select the line below and click on Run selected line or Ctrl+Enter (Cmd+Enter)
+-   having install.packages code within a chunk can cause issues when knitting to HTML
+
+
+install.packages("lpSolve")
+
+
+
+### Load the lpSolve library to use the lp function
+-   Call the library function "lpSolve". You need to execute this library function each time when you run linear programming
+```{r}
+#no code needed this chunk, just run it
+library (lpSolve) 
+```
+
+
+
+### Question 2:	Enter the problem data and find the optimum solution for this problem using R Studio 
+-   Load the elements: 
+
+-   objective, constr, constr.dir, rhs (from cheat sheet)  -OR-
+-   ObjFunc, LeftSide, OpDirections, RightSide (from textbook/demo) 
+
+```{r}
+
+ObjFunc = c(50, 25, 40) #-   #maxmize profit = 50k + 25d + 40p
+
+leftsidevector = c(2,0.5,1,1,0.5,1,25,10,25,0,1,0)
+
+LeftSide = matrix(leftsidevector, nrow = 4, byrow=TRUE)
+
+OpDirections = c("<=","<=","<=","<=")
+RightSide = c(250,200,4000,200)
+
+
+```
+
+### Question 3: Run the lp function (optimum code from cheat sheet; lpmodel from textbook/demo)
+```{r}
+lpmodel = lp(direction = "max", ObjFunc, LeftSide, OpDirections, RightSide, compute.sens = T)
+```
+
+
+### Question 4: Display the solutions from the optimum solution 
+-   a. Display the solution values 
+-   b. Display the objective value 
+-   c. Display the dual values 
+```{r}
+
+lpmodel$objval
+lpmodel$solution
+lpmodel$duals
+
+
+```
+
+### Question 5: Answer the questions inside the chunk using # to comment 
+-   What are the dual values? List and label each.
+-   How much would the profit increase if we had 10 more pounds of steel on hand?
+-   Should you purchase additional pounds of raw material if a supplier offered you 100 pounds of raw material for 1100? Briefly, why or why not? 
+-   How much would the profit increase if we had one additional unit of labor (hour)?
+```{r}
+#--------------------
+# What are the dual values? List and label each.
+
+#labor 10.0
+#machine 0.0
+# raw 1.2
+#steel 8.0  
+#Kettlebells 0.0
+#Dumbells 0.0  
+#plates 0.0
+
+
+#--------------------
+# How much would the profit increase if we had 10 more pounds of steel on hand?
+
+# 80 dollars 
+
+
+#--------------------
+# Should you purchase additional pounds of raw material if a supplier offered you 100 pounds of raw material for 1100? Briefly, why or why not? 
+
+#No 1.2*100 equal 120 not 1200 or 1100, thus you lose 980 
+
+
+#--------------------
+#	How much would the profit increase if we had one additional unit of labor (hour)?
+
+#10 dollars 
+
+
+#--------------------
+```
+
+
+
+
+### Knit to HTML
+
+
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+

@@ -1,0 +1,131 @@
+---
+title: "Homework 7"
+author: "Ryan Hensley"
+date: "`r Sys.Date()`"
+output: 
+  html_document: 
+    code_download: yes
+    toc: yes
+---
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+# Classification: Decision Trees
+#-----------------------------------------------
+Install the packages
+
+install.packages("rpart")        #needs to be installed only once
+install.packages("rpart.plot")  # needs to be installed only once
+
+#-----------------------------------------------
+
+## Load/Call each library (rpart and rpart.plot). Needs to be called each time
+```{r}
+library (rpart)
+library (rpart.plot)
+```
+
+
+
+## Question 1: Create a data frame loaded from drug200.csv and call it pharm
+```{r}
+pharm = read.csv("drug200.csv")
+
+```
+
+## Question 2: Display the first 10 rows from the data frame called pharm
+```{r}
+head(pharm,10)
+
+```
+
+
+
+## No Code needed, just run: Create a subset from pharm with 70% of the rows assigned to a train dataframe and the remaining 30% assigned to a test data frame
+```{r}
+## 70% of the sample size
+smp_size <- floor(0.70 * nrow(pharm))
+## set the seed to make your partition reproducible
+set.seed(123)
+train_ind <- sample(seq_len(nrow(pharm)), size = smp_size)
+train <- pharm[train_ind, ]
+test <- pharm[-train_ind, ]
+```
+
+
+**Now, you will use train and test for the following: using pharm (onward) will result in loss of points**
+
+
+## Question 3: Run the decision tree function. This will generate the algorithm (decision tree) to predict the Drug based on the characteristics of the patients (age, sex, blood pressure, cholesterol, Sodium).
+```{r}
+drugModel = rpart(Drug~.,train)
+
+```
+
+## Question 4: Display the decision tree for predicting the Drug
+```{r}
+rpart.plot(drugModel,type = 4, extra = 101)
+```
+
+
+## Question 5: Display the frequency: Drug from the validation data
+```{r}
+  table(test$Drug)
+
+
+```
+
+## Question 6: Predict the Drug for patients in the validation data and call the predict vector p
+```{r}
+
+p = predict(drugModel,test, type ="class")
+
+```
+
+
+## Question 7: Add the predicted Drug as a new column to the test data frame (validation data)
+```{r}
+test$predicted = p 
+
+```
+
+
+## Question 8: Display the frequency: look at the actual (Drug) and the predicted Drug from validation
+```{r}
+
+table(test[,6:7])
+(10+3+6+23+18)/nrow(test)
+```
+
+
+## Question 9: Reading the table results:    
+```{r}
+#Result: ___60__ out of _60_____ are correctly predicted
+#The accuracy level =  __60__ / __60_ = _100__% 
+```
+
+
+
+## Question 10: Just as we did in class, walkthrough the following rows and comment what the predicted classification should be (look at the decision tree). In other words, each row represents a patient, tell me what drug would be administered to each. Comment your responses.
+-   Row1: Age = 40, Sex = M, BP = LOW, Cholesterol = HIGH, Na_to_K = 10.2
+-   Row2: Age = 45, Sex = F, BP = NORMAL, Cholesterol = NORMAL, Na_to_K = 9.8
+-   Row3: Age = 38, Sex = M, BP = HIGH, Cholesterol = NORMAL, Na_to_K = 11.2
+
+```{r}
+#Row1: drug C
+#Row2: drug x
+#Row3: drug A
+```
+
+
+### Knit to HTML
+
+
+
+
+
+**Copyright Kaitlyn Hoffmann, All rights reserved. Not for resale, distribution, or posting to external sites for all content provided.**
+
+
+

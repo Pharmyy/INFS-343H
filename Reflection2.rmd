@@ -1,0 +1,219 @@
+---
+title: "Reflection 2"
+author: "Ryan Hensley"
+date: "2023-11-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+wine = read.csv("winequality-red.csv") 
+colnames(wine)
+colnames(wine)[c(1:8,10:12)] = c("FixedAcidity","VolatileAcidity","CitricAcid", "ResidualSugar", "Chlorides", "FreeSulfurDioxide", 
+                         "TotalSulfurDioxide", "Density","Sulphates","Alcohol","Quality")
+str(wine)
+wine$Quality = as.numeric(wine$Quality)
+
+#Add derived column
+wine$VariableSulfurDioxide = wine$TotalSulfurDioxide - wine$FreeSulfurDioxide 
+```
+```{r}
+#Corr between quality of wine and other columns 
+cor(wine$Quality,wine[,1:13])
+#Highest Postive 
+#Corelation are alcohol,sulphates, citric acid
+
+#Highest Negative 
+#Volatile Acidity,VariableSulfur,TotalSulfurDioxide
+
+#graph 
+par (mfrow=c(1,2))
+  #Hihgest Positve Single Corealtion
+  plot(wine$Alcohol,wine$Quality,main="Quality and Alcohol Level")
+  abline(lm(Quality~Alcohol, data=wine), lwd=2, col="red")
+  
+  #Highest Negative Corealation
+  plot(wine$VolatileAcidity,wine$Quality,main="Quality and VolatileAcidity Level")
+  abline(lm(Quality~VolatileAcidity, data=wine), lwd=2, col="red")
+
+```
+
+```{r}
+options(scipen=999)
+  #models
+#Highest Overall Corelation
+LR1= lm(Quality~Alcohol, data=wine)
+summary(LR1)
+
+```
+
+```{r}
+#------------------------------------------
+#Regression Equation:  
+#Answer:  y = 1.87497+0.36084x 
+
+
+#------------------------------------------
+#R2:
+##Answer: 22.67% of the variation is is explained by the independent variable in the model
+
+
+
+#------------------------------------------
+#Hypothesis Testing:Alcohol
+
+#Answer p-value: <0.0000000000000002 pvalue < 0.05
+#Decision/Response: Reject the null hypothesis [that Alcohol is not significant]; Alcohol is significant in predicting Quality
+
+#Confidence Interval Code
+predict(LR1, data.frame(Alcohol=8), interval="confidence")
+#Confidence Interval Interpretation Response/Statement: With 95% confidence, we can say the quality of wine with an alcohol level of 8 will have a quality between 4.675137 and 4.848281
+```
+
+
+```{r}
+#Top 3 positive corelations 
+LR2= lm(Quality~Alcohol+Sulphates+CitricAcid, data=wine)
+summary(LR2)
+```
+
+
+```{r}
+#------------------------------------------
+#Regression Equation:  
+#Answer:  y = 1.43392+0.33841Alcohol+0.81403Sulphates+0.51345CitricAcid
+
+
+#------------------------------------------
+#R2:
+##Answer: 28.36% of the variation is is explained by the independent variable in the model
+
+#------------------------------------------
+#Hypothesis Testing:Alcohol
+
+#Answer p-value: 0.0000000000000002  < 0.05
+#Decision/Response: Reject the null hypothesis [that alcohol is not significant]; alcohol is significant in predicting quality
+
+
+#------------------------------------------ 
+
+#Hypothesis Testing:Sulphates
+
+#Answer p-value: 0.000000000000036480 < 0.05
+#Decision/Response: Reject the null hypothesis [that Suplhates is not significant]; Sulphates are significant in predicting Quality
+#------------------------------------------
+
+#------------------------------------------ 
+
+#Hypothesis Testing:CitricAcid
+
+#Answer p-value: 0.000000037217429623  < 0.05
+#Decision/Response: Reject the null hypothesis [that CitricAcid is not significant]; CitricAcid is significant in predicting Quality
+#------------------------------------------
+
+#Confidence Interval Code
+predict(LR2, data.frame(Alcohol=8, Sulphates=1, CitricAcid = 0.5), interval="confidence")
+#Confidence Interval Interpretation Response/Statement: With 95% confidence, we can say the quality of wine with an alcohol level of 8,Sulphates of 1, and CitricAcid off 0.5 will have a quality between 5.096602  and 5.32727
+```
+
+
+```{r}
+#Everything 
+LR3= lm(Quality~Alcohol+Sulphates+CitricAcid+FixedAcidity+VolatileAcidity+ResidualSugar+Chlorides+FreeSulfurDioxide+TotalSulfurDioxide+Density+pH,data=wine)
+summary(LR3)
+```
+
+```{r}
+#------------------------------------------
+#Regression Equation:  
+#Answer:  y = 21.9652085+0.2761977Alcohol+0.9163344Sulphates-0.1825639CitricAcid+0.0249906FixedAcidity-1.0835903VolatileAcidity+0.0163313ResidualSugar-1.8742252Chlorides +  0.0043613FreeSulfurDioxide-0.0032646TotalSulfurDioxide-17.8811638Density-0.4136531pH
+
+
+#------------------------------------------
+#R2:
+##Answer: 36.06% of the variation is is explained by the independent variable in the model
+
+#------------------------------------------
+#Hypothesis Testing:Alcohol
+
+#Answer p-value: 0.0000000000000002  < 0.05
+#Decision/Response: Reject the null hypothesis [that alcohol is not significant]; alcohol is significant in predicting quality
+
+
+#------------------------------------------ 
+
+#Hypothesis Testing:Sulphates
+
+#Answer p-value: 0.00000000000000213  < 0.05
+#Decision/Response: Reject the null hypothesis [that Suplhates is not significant]; Sulphates are significant in predicting Quality
+#------------------------------------------
+
+#------------------------------------------ 
+
+#Hypothesis Testing:CitricAcid
+
+#Answer p-value: 0.2150  > 0.05
+#Decision/Response: Accept the null hypothesis that CitricAcid is not significant in predicting Quality
+#------------------------------------------
+#Hypothesis Testing:FixedAcidity
+
+#Answer p-value: 0.3357 > 0.05
+#Decision/Response: Accept the null hypothesis that FixedAcidity is not significant in predicting Quality
+#------------------------------------------
+#Hypothesis Testing:VolatileAcidity 
+
+#Answer p-value: 0.0000000000000002   < 0.05
+#Decision/Response: Reject the null hypothesis [that VolatileAcidity is not significant]; VolatileAcidity is significant in predicting Quality
+#------------------------------------------
+#Hypothesis Testing:ResidualSugar 
+
+#Answer p-value: 0.2765 > 0.05
+#Decision/Response: Accept the null hypothesis that ResidualSugar is not significant in predicting Quality
+#------------------------------------------
+
+#Hypothesis Testing:Chlorides 
+
+#Answer p-value: 0.00000837395338495  < 0.05
+#Decision/Response: Reject the null hypothesis [that Chlorides are not significant]; Chlorides are significant in predicting Quality
+#------------------------------------------
+
+#Hypothesis Testing:FreeSulfurDioxide  
+
+#Answer p-value: 0.0447 < 0.05
+#Decision/Response: Reject the null hypothesis [that FreeSulfurDioxide is not significant]; FreeSulfurDioxide is significant in predicting Quality
+#------------------------------------------
+
+#Hypothesis Testing:TotalSulfurDioxide  
+
+#Answer p-value: 0.00000800460981496 < 0.05
+#Decision/Response: Reject the null hypothesis [that TotalSulfurDioxide is not significant]; TotalSulfurDioxide is significant in predicting Quality
+#------------------------------------------
+
+
+#Hypothesis Testing:Density          
+
+#Answer p-value: 0.4086 > 0.05
+#Decision/Response: Accept the null hypothesis that Density is not significant in predicting Quality
+#------------------------------------------
+
+#Hypothesis Testing:pH  
+
+#Answer p-value: 0.0310    < 0.05
+#Decision/Response: Reject the null hypothesis [that pH is not significant]; pH is significant in predicting Quality
+#------------------------------------------
+
+
+#Confidence Interval Code
+predict(LR3, data.frame(Alcohol=8, Sulphates=1, CitricAcid = 0.5,FixedAcidity = 7.5, VolatileAcidity = 0.62, ResidualSugar = 1.85,Chlorides = 0.09,FreeSulfurDioxide= 12,TotalSulfurDioxide=67,Density =1, pH = 3), interval="confidence")
+#Confidence Interval Interpretation Response/Statement: With 95% confidence, we can say the quality of wine with an Alcohol=8, Sulphates=1, CitricAcid = 0.5,FixedAcidity = 7.5, VolatileAcidity = 0.62, ResidualSugar = 1.85,Chlorides = 0.09,FreeSulfurDioxide= 12,TotalSulfurDioxide=67,Density =1, pH = 3 will have a quality between 4.86439 and 5.312538
+```
+
